@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import '../../../../core/theme/app_colors.dart';
+import '../../../../core/widgets/dot_indicator.dart';
 
 /// Carrusel de imágenes promocionales con indicadores de página
 class EcommerceBannerCarousel extends StatelessWidget {
@@ -18,12 +19,12 @@ class EcommerceBannerCarousel extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return Column(
-      children: [
-        // Carrusel de banners
-        SizedBox(
-          height: 180,
-          child: PageView.builder(
+    return SizedBox(
+      height: 180,
+      child: Stack(
+        children: [
+          // Carrusel de banners
+          PageView.builder(
             controller: pageController,
             itemCount: images.length,
             onPageChanged: onPageChanged,
@@ -49,7 +50,7 @@ class EcommerceBannerCarousel extends StatelessWidget {
                             child: Icon(
                               Icons.image_outlined,
                               size: 48,
-                              color: AppColors.primary.withOpacity(0.5),
+                              color: AppColors.primary.withValues(alpha: 0.5),
                             ),
                           ),
                         );
@@ -60,28 +61,20 @@ class EcommerceBannerCarousel extends StatelessWidget {
               );
             },
           ),
-        ),
-        const SizedBox(height: 12),
-        // Indicadores de página (dots)
-        Row(
-          mainAxisAlignment: MainAxisAlignment.center,
-          children: List.generate(
-            images.length,
-            (index) => AnimatedContainer(
-              duration: const Duration(milliseconds: 300),
-              margin: const EdgeInsets.symmetric(horizontal: 3),
-              width: index == currentIndex ? 24 : 8,
-              height: 8,
-              decoration: BoxDecoration(
-                color: index == currentIndex
-                    ? AppColors.primary
-                    : AppColors.dotInactive,
-                borderRadius: BorderRadius.circular(4),
-              ),
+          // Dots posicionados en la parte inferior centrados
+          Positioned(
+            bottom: 12,
+            left: 0,
+            right: 0,
+            child: DotIndicator(
+              totalPages: images.length,
+              currentPage: currentIndex,
+              style: DotIndicatorStyle.circle,
+              alignment: MainAxisAlignment.center,
             ),
           ),
-        ),
-      ],
+        ],
+      ),
     );
   }
 }

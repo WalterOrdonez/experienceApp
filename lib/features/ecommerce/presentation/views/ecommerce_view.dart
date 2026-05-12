@@ -44,9 +44,6 @@ class _EcommerceViewState extends ConsumerState<EcommerceView> {
                     crossAxisAlignment: CrossAxisAlignment.start,
                     children: [
                       const SizedBox(height: 16),
-                      // Saludo al usuario
-                      Text('Hi, Andrea', style: AppTextStyles.heading),
-                      const SizedBox(height: 16),
                       // Barra de búsqueda con favoritos y carrito
                       const EcommerceSearchBar(),
                       const SizedBox(height: 24),

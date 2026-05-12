@@ -4,7 +4,7 @@ import '../../../../core/navigation/app_router.dart';
 import '../../../../core/theme/app_colors.dart';
 import '../../../../core/theme/app_text_styles.dart';
 import '../state/onboarding_notifier.dart';
-import '../widgets/onboarding_dot_indicator.dart';
+import '../../../../core/widgets/dot_indicator.dart';
 import '../widgets/onboarding_image_carousel.dart';
 
 /// Vista principal del onboarding con carrusel de imágenes
@@ -57,7 +57,7 @@ class _OnboardingViewState extends ConsumerState<OnboardingView> {
               ),
               const SizedBox(height: 24),
               // Indicadores de página (dots)
-              OnboardingDotIndicator(
+              DotIndicator(
                 totalPages: state.images.length,
                 currentPage: state.currentImageIndex,
               ),

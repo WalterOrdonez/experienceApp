@@ -14,7 +14,7 @@ class EcommerceSearchBar extends StatelessWidget {
           child: Container(
             height: 48,
             decoration: BoxDecoration(
-              color: AppColors.primaryLight.withOpacity(0.5),
+              color: AppColors.white,
               borderRadius: BorderRadius.circular(12),
             ),
             child: Row(
@@ -22,15 +22,6 @@ class EcommerceSearchBar extends StatelessWidget {
                 const SizedBox(width: 12),
                 Icon(Icons.search, color: AppColors.textSecondary, size: 22),
                 const SizedBox(width: 8),
-                Expanded(
-                  child: Text(
-                    'Search...',
-                    style: TextStyle(
-                      fontSize: 14,
-                      color: AppColors.textSecondary,
-                    ),
-                  ),
-                ),
               ],
             ),
           ),
@@ -58,7 +49,7 @@ class _ActionIcon extends StatelessWidget {
       width: 44,
       height: 44,
       decoration: BoxDecoration(
-        color: AppColors.primaryLight.withOpacity(0.5),
+        color: AppColors.white,
         borderRadius: BorderRadius.circular(12),
       ),
       child: Icon(icon, color: AppColors.textPrimary, size: 22),
