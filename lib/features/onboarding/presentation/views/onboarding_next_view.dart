@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
+import '../../../../core/navigation/app_router.dart';
 import '../../../../core/theme/app_colors.dart';
 import '../../../../core/theme/app_text_styles.dart';
 import '../state/onboarding_interests_notifier.dart';
@@ -84,15 +85,12 @@ class OnboardingNextView extends ConsumerWidget {
     );
   }
 
-  /// Acción al presionar el botón Next
-  /// TODO: Navegar a la siguiente pantalla cuando esté disponible
+  /// Navega a la vista de Ecommerce si hay al menos un interés seleccionado
   VoidCallback? _onNextPressed(WidgetRef ref) {
     final state = ref.read(onboardingInterestsProvider);
-    // Habilitar el botón solo si hay al menos un interés seleccionado
     if (state.selectedInterests.isEmpty) return null;
     return () {
-      // Navegar a la siguiente pantalla
-      debugPrint('Intereses seleccionados: ${state.selectedInterests}');
+      ref.read(routerProvider).push(AppRoutes.ecommerce);
     };
   }
 }

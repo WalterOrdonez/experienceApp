@@ -1,3 +1,4 @@
+import 'package:flutter_prototype/features/ecommerce/presentation/views/ecommerce_view.dart';
 import 'package:flutter_prototype/features/onboarding/presentation/views/onboarding_next_view.dart';
 import 'package:flutter_prototype/features/onboarding/presentation/views/onboarding_view.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
@@ -15,6 +16,10 @@ final routerProvider = Provider<GoRouter>((ref) {
         path: AppRoutes.onboardingNext,
         builder: (context, state) => const OnboardingNextView(),
       ),
+      GoRoute(
+        path: AppRoutes.ecommerce,
+        builder: (context, state) => const EcommerceView(),
+      ),
     ],
   );
 });
@@ -23,4 +28,5 @@ final routerProvider = Provider<GoRouter>((ref) {
 abstract class AppRoutes {
   static const onboarding = '/';
   static const onboardingNext = '/onboarding-next';
+  static const ecommerce = '/ecommerce';
 }
