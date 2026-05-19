@@ -12,7 +12,7 @@ class ProductDetailState with _$ProductDetailState {
     @Default(0.0) double price,
     @Default('') String description,
     @Default([]) List<String> availableSizes,
-    @Default('') String selectedSize,
+    @Default(0) int selectedSize,
     @Default([]) List<int> availableColors,
     @Default(0) int selectedColorIndex,
     @Default(false) bool isFavorite,

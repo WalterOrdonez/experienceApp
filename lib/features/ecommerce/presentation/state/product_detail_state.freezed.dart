@@ -23,7 +23,7 @@ mixin _$ProductDetailState {
   double get price => throw _privateConstructorUsedError;
   String get description => throw _privateConstructorUsedError;
   List<String> get availableSizes => throw _privateConstructorUsedError;
-  String get selectedSize => throw _privateConstructorUsedError;
+  int get selectedSize => throw _privateConstructorUsedError;
   List<int> get availableColors => throw _privateConstructorUsedError;
   int get selectedColorIndex => throw _privateConstructorUsedError;
   bool get isFavorite => throw _privateConstructorUsedError;
@@ -49,7 +49,7 @@ abstract class $ProductDetailStateCopyWith<$Res> {
     double price,
     String description,
     List<String> availableSizes,
-    String selectedSize,
+    int selectedSize,
     List<int> availableColors,
     int selectedColorIndex,
     bool isFavorite,
@@ -111,7 +111,7 @@ class _$ProductDetailStateCopyWithImpl<$Res, $Val extends ProductDetailState>
             selectedSize: null == selectedSize
                 ? _value.selectedSize
                 : selectedSize // ignore: cast_nullable_to_non_nullable
-                      as String,
+                      as int,
             availableColors: null == availableColors
                 ? _value.availableColors
                 : availableColors // ignore: cast_nullable_to_non_nullable
@@ -146,7 +146,7 @@ abstract class _$$ProductDetailStateImplCopyWith<$Res>
     double price,
     String description,
     List<String> availableSizes,
-    String selectedSize,
+    int selectedSize,
     List<int> availableColors,
     int selectedColorIndex,
     bool isFavorite,
@@ -207,7 +207,7 @@ class __$$ProductDetailStateImplCopyWithImpl<$Res>
         selectedSize: null == selectedSize
             ? _value.selectedSize
             : selectedSize // ignore: cast_nullable_to_non_nullable
-                  as String,
+                  as int,
         availableColors: null == availableColors
             ? _value._availableColors
             : availableColors // ignore: cast_nullable_to_non_nullable
@@ -235,7 +235,7 @@ class _$ProductDetailStateImpl implements _ProductDetailState {
     this.price = 0.0,
     this.description = '',
     final List<String> availableSizes = const [],
-    this.selectedSize = '',
+    this.selectedSize = 0,
     final List<int> availableColors = const [],
     this.selectedColorIndex = 0,
     this.isFavorite = false,
@@ -275,7 +275,7 @@ class _$ProductDetailStateImpl implements _ProductDetailState {
 
   @override
   @JsonKey()
-  final String selectedSize;
+  final int selectedSize;
   final List<int> _availableColors;
   @override
   @JsonKey()
@@ -363,7 +363,7 @@ abstract class _ProductDetailState implements ProductDetailState {
     final double price,
     final String description,
     final List<String> availableSizes,
-    final String selectedSize,
+    final int selectedSize,
     final List<int> availableColors,
     final int selectedColorIndex,
     final bool isFavorite,
@@ -382,7 +382,7 @@ abstract class _ProductDetailState implements ProductDetailState {
   @override
   List<String> get availableSizes;
   @override
-  String get selectedSize;
+  int get selectedSize;
   @override
   List<int> get availableColors;
   @override

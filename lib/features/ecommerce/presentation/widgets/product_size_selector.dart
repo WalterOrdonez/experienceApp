@@ -4,8 +4,8 @@ import '../../../../core/theme/app_colors.dart';
 /// Selector de tallas con chips circulares
 class ProductSizeSelector extends StatelessWidget {
   final List<String> sizes;
-  final String selectedSize;
-  final ValueChanged<String> onSizeSelected;
+  final int selectedSize;
+  final ValueChanged<int> onSizeSelected;
 
   const ProductSizeSelector({
     super.key,
@@ -29,7 +29,7 @@ class ProductSizeSelector extends StatelessWidget {
         ),
         const SizedBox(height: 12),
         Row(
-          children: sizes.map((size) {
+          children: List.generate(sizes.length, (size) {
             final isSelected = size == selectedSize;
             return Padding(
               padding: const EdgeInsets.only(right: 10),
@@ -51,7 +51,7 @@ class ProductSizeSelector extends StatelessWidget {
                   ),
                   child: Center(
                     child: Text(
-                      size,
+                      sizes[size],
                       style: TextStyle(
                         fontSize: 12,
                         fontWeight: FontWeight.w600,
