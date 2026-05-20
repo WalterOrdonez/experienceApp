@@ -48,6 +48,22 @@ class ProductDetailNotifier extends StateNotifier<ProductDetailState> {
   void toggleFavorite() {
     state = state.copyWith(isFavorite: !state.isFavorite);
   }
+
+  /// Construye la entidad de producto según el estado actual del detalle
+  ProductEntity buildProductEntity() {
+    final imagePath = state.productImages.isNotEmpty
+        ? state.productImages.first
+        : 'assets/images/product_1.png';
+
+    return ProductEntity(
+      id: '${state.name}_${state.price.toStringAsFixed(2)}_${imagePath}',
+      name: state.name,
+      imagePath: imagePath,
+      price: state.price,
+      size: state.availableSizes,
+      color: state.availableColors,
+    );
+  }
 }
 
 /// Provider del notifier de detalle de producto

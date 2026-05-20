@@ -1,5 +1,7 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_prototype/features/ecommerce/presentation/state/cart_notifier.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
+import '../../../../core/navigation/app_router.dart';
 import '../../../../core/theme/app_colors.dart';
 import '../../../../core/theme/app_text_styles.dart';
 import '../state/product_detail_notifier.dart';
@@ -116,7 +118,17 @@ class _EcommerceDetailViewState extends ConsumerState<EcommerceDetailView> {
             // Botón "Add to bag" fijo en la parte inferior
             AddToBagButton(
               onPressed: () {
-                // TODO: Implementar acción de agregar al carrito
+                final product = ref
+                    .read(productDetailProvider.notifier)
+                    .buildProductEntity();
+                ref
+                    .read(cartProvider.notifier)
+                    .addItemFromProductDetail(
+                      product: product,
+                      selectedSizeIndex: state.selectedSize,
+                      selectedColorIndex: state.selectedColorIndex,
+                    );
+                ref.read(routerProvider).push(AppRoutes.cart);
               },
             ),
           ],

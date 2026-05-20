@@ -1,3 +1,4 @@
+import 'package:flutter_prototype/features/ecommerce/presentation/views/cart_view.dart';
 import 'package:flutter_prototype/features/ecommerce/presentation/views/ecommerce_detail_view.dart';
 import 'package:flutter_prototype/features/ecommerce/presentation/views/ecommerce_view.dart';
 import 'package:flutter_prototype/features/onboarding/presentation/views/onboarding_next_view.dart';
@@ -25,6 +26,10 @@ final routerProvider = Provider<GoRouter>((ref) {
         path: AppRoutes.ecommerceDetail,
         builder: (context, state) => const EcommerceDetailView(),
       ),
+      GoRoute(
+        path: AppRoutes.cart,
+        builder: (context, state) => const CartView(),
+      ),
     ],
   );
 });
@@ -35,4 +40,5 @@ abstract class AppRoutes {
   static const onboardingNext = '/onboarding-next';
   static const ecommerce = '/ecommerce';
   static const ecommerceDetail = '/ecommerce-detail';
+  static const cart = '/cart';
 }
