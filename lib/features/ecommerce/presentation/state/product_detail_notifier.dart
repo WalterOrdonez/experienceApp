@@ -56,7 +56,7 @@ class ProductDetailNotifier extends StateNotifier<ProductDetailState> {
         : 'assets/images/product_1.png';
 
     return ProductEntity(
-      id: '${state.name}_${state.price.toStringAsFixed(2)}_${imagePath}',
+      id: '${state.name}_${state.price.toStringAsFixed(2)}_$imagePath',
       name: state.name,
       imagePath: imagePath,
       price: state.price,

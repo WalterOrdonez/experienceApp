@@ -12,20 +12,24 @@ class CartLocalDatasource {
 
   /// Obtiene los items del carrito almacenados localmente
   List<CartItemModel> getCartItems() {
-    final jsonString = _localStorage.prefs.getString(_cartKey);
-    if (jsonString == null || jsonString.isEmpty) return [];
+    final jsonList = _localStorage.prefs.getStringList(_cartKey);
+    if (jsonList == null || jsonList.isEmpty) return [];
 
-    final List<dynamic> jsonList = json.decode(jsonString) as List<dynamic>;
     return jsonList
-        .map((item) => CartItemModel.fromJson(item as Map<String, dynamic>))
+        .map(
+          (item) =>
+              CartItemModel.fromJson(json.decode(item) as Map<String, dynamic>),
+        )
         .toList();
   }
 
   /// Guarda la lista de items del carrito en local storage
   Future<void> saveCartItems(List<CartItemModel> items) async {
     final jsonList = items.map((item) => item.toJson()).toList();
-    final jsonString = json.encode(jsonList);
-    await _localStorage.prefs.setString(_cartKey, jsonString);
+    await _localStorage.prefs.setStringList(
+      _cartKey,
+      jsonList.map((e) => json.encode(e)).toList(),
+    );
   }
 
   /// Limpia el carrito del local storage

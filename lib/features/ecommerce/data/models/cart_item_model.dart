@@ -1,29 +1,25 @@
 import '../../domain/entities/cart_item_entity.dart';
 import '../../domain/entities/product_entity.dart';
+import 'package:freezed_annotation/freezed_annotation.dart';
+
+part 'cart_item_model.freezed.dart';
 
 /// Modelo de datos para serializar/deserializar un item del carrito
-class CartItemModel {
-  final String productId;
-  final String productName;
-  final String productImagePath;
-  final double productPrice;
-  final List<String> productSizes;
-  final List<int> productColors;
-  final int quantity;
-  final String selectedSize;
-  final int selectedColor;
+@freezed
+class CartItemModel with _$CartItemModel {
+  const factory CartItemModel({
+    @Default('') String productId,
+    @Default('') String productName,
+    @Default('') String productImagePath,
+    @Default(0.0) double productPrice,
+    @Default([]) List<String> productSizes,
+    @Default([]) List<int> productColors,
+    @Default(0) int quantity,
+    @Default('') String selectedSize,
+    @Default(0) int selectedColor,
+  }) = _CartItemModel;
 
-  const CartItemModel({
-    required this.productId,
-    required this.productName,
-    required this.productImagePath,
-    required this.productPrice,
-    required this.productSizes,
-    required this.productColors,
-    required this.quantity,
-    required this.selectedSize,
-    required this.selectedColor,
-  });
+  const CartItemModel._();
 
   /// Convierte desde JSON (Map)
   factory CartItemModel.fromJson(Map<String, dynamic> json) {

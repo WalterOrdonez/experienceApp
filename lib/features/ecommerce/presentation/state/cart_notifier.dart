@@ -66,6 +66,9 @@ class CartNotifier extends StateNotifier<CartState> {
       state = state.copyWith(items: updated);
       await _persist();
     }
+    if (updated[index].quantity <= 1) {
+      await removeItem(index);
+    }
   }
 
   /// Limpia todo el carrito
