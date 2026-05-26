@@ -12,25 +12,11 @@ import '../widgets/product_name_favorite.dart';
 import '../widgets/product_size_selector.dart';
 
 /// Vista de detalle de producto con carrusel, tallas, colores y botón de compra
-class EcommerceDetailView extends ConsumerStatefulWidget {
+class EcommerceDetailView extends ConsumerWidget {
   const EcommerceDetailView({super.key});
 
   @override
-  ConsumerState<EcommerceDetailView> createState() =>
-      _EcommerceDetailViewState();
-}
-
-class _EcommerceDetailViewState extends ConsumerState<EcommerceDetailView> {
-  final PageController _imageController = PageController();
-
-  @override
-  void dispose() {
-    _imageController.dispose();
-    super.dispose();
-  }
-
-  @override
-  Widget build(BuildContext context) {
+  Widget build(BuildContext context, WidgetRef ref) {
     final state = ref.watch(productDetailProvider);
 
     return Scaffold(
@@ -48,7 +34,6 @@ class _EcommerceDetailViewState extends ConsumerState<EcommerceDetailView> {
                     ProductImageCarousel(
                       images: state.productImages,
                       currentIndex: state.currentImageIndex,
-                      pageController: _imageController,
                       onPageChanged: (index) {
                         ref
                             .read(productDetailProvider.notifier)

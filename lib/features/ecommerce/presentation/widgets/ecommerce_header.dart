@@ -2,8 +2,10 @@ import 'package:flutter/material.dart';
 import '../../../../core/theme/app_colors.dart';
 
 /// Header del carrito con flecha atrás y título centrado
-class CartHeader extends StatelessWidget {
-  const CartHeader({super.key});
+class EcommerceHeader extends StatelessWidget {
+  const EcommerceHeader({super.key, required this.title});
+
+  final String title;
 
   @override
   Widget build(BuildContext context) {
@@ -23,9 +25,9 @@ class CartHeader extends StatelessWidget {
               ),
             ),
           ),
-          const Text(
-            'Your bag',
-            style: TextStyle(
+          Text(
+            title,
+            style: const TextStyle(
               fontSize: 18,
               fontWeight: FontWeight.w600,
               color: AppColors.textPrimary,

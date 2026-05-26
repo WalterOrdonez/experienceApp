@@ -1,9 +1,10 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_prototype/core/navigation/app_router.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import '../../../../core/theme/app_colors.dart';
 import '../state/cart_notifier.dart';
 import '../widgets/cart_footer.dart';
-import '../widgets/cart_header.dart';
+import '../widgets/ecommerce_header.dart';
 import '../widgets/cart_item_tile.dart';
 
 /// Vista del carrito de compras (Your bag)
@@ -20,7 +21,7 @@ class CartView extends ConsumerWidget {
         child: Column(
           children: [
             // Header con botón atrás y título
-            const CartHeader(),
+            const EcommerceHeader(title: 'Your Bag'),
             const SizedBox(height: 8),
             // Lista de items del carrito
             Expanded(
@@ -47,7 +48,7 @@ class CartView extends ConsumerWidget {
             CartFooter(
               total: state.total,
               onCheckout: () {
-                // TODO: Implementar checkout
+                ref.read(routerProvider).push(AppRoutes.checkout);
               },
             ),
           ],

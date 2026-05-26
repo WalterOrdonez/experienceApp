@@ -6,7 +6,6 @@ import '../../../../core/widgets/dot_indicator.dart';
 class ProductImageCarousel extends StatelessWidget {
   final List<String> images;
   final int currentIndex;
-  final PageController pageController;
   final ValueChanged<int> onPageChanged;
   final VoidCallback onClose;
 
@@ -14,7 +13,6 @@ class ProductImageCarousel extends StatelessWidget {
     super.key,
     required this.images,
     required this.currentIndex,
-    required this.pageController,
     required this.onPageChanged,
     required this.onClose,
   });
@@ -30,7 +28,6 @@ class ProductImageCarousel extends StatelessWidget {
             height: 300,
             color: AppColors.primaryLight,
             child: PageView.builder(
-              controller: pageController,
               itemCount: images.length,
               onPageChanged: onPageChanged,
               itemBuilder: (context, index) {
