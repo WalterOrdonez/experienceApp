@@ -23,6 +23,8 @@ mixin _$PaymentMethod {
   String get type =>
       throw _privateConstructorUsedError; // 'credit_card', 'apple_pay'
   bool get isSelected => throw _privateConstructorUsedError;
+  String? get expirationDate => throw _privateConstructorUsedError;
+  String? get cvv => throw _privateConstructorUsedError;
 
   /// Create a copy of PaymentMethod
   /// with the given fields replaced by the non-null parameter values.
@@ -44,6 +46,8 @@ abstract class $PaymentMethodCopyWith<$Res> {
     String cardNumber,
     String type,
     bool isSelected,
+    String? expirationDate,
+    String? cvv,
   });
 }
 
@@ -67,6 +71,8 @@ class _$PaymentMethodCopyWithImpl<$Res, $Val extends PaymentMethod>
     Object? cardNumber = null,
     Object? type = null,
     Object? isSelected = null,
+    Object? expirationDate = freezed,
+    Object? cvv = freezed,
   }) {
     return _then(
       _value.copyWith(
@@ -90,6 +96,14 @@ class _$PaymentMethodCopyWithImpl<$Res, $Val extends PaymentMethod>
                 ? _value.isSelected
                 : isSelected // ignore: cast_nullable_to_non_nullable
                       as bool,
+            expirationDate: freezed == expirationDate
+                ? _value.expirationDate
+                : expirationDate // ignore: cast_nullable_to_non_nullable
+                      as String?,
+            cvv: freezed == cvv
+                ? _value.cvv
+                : cvv // ignore: cast_nullable_to_non_nullable
+                      as String?,
           )
           as $Val,
     );
@@ -111,6 +125,8 @@ abstract class _$$PaymentMethodImplCopyWith<$Res>
     String cardNumber,
     String type,
     bool isSelected,
+    String? expirationDate,
+    String? cvv,
   });
 }
 
@@ -133,6 +149,8 @@ class __$$PaymentMethodImplCopyWithImpl<$Res>
     Object? cardNumber = null,
     Object? type = null,
     Object? isSelected = null,
+    Object? expirationDate = freezed,
+    Object? cvv = freezed,
   }) {
     return _then(
       _$PaymentMethodImpl(
@@ -156,6 +174,14 @@ class __$$PaymentMethodImplCopyWithImpl<$Res>
             ? _value.isSelected
             : isSelected // ignore: cast_nullable_to_non_nullable
                   as bool,
+        expirationDate: freezed == expirationDate
+            ? _value.expirationDate
+            : expirationDate // ignore: cast_nullable_to_non_nullable
+                  as String?,
+        cvv: freezed == cvv
+            ? _value.cvv
+            : cvv // ignore: cast_nullable_to_non_nullable
+                  as String?,
       ),
     );
   }
@@ -170,6 +196,8 @@ class _$PaymentMethodImpl implements _PaymentMethod {
     required this.cardNumber,
     required this.type,
     required this.isSelected,
+    required this.expirationDate,
+    required this.cvv,
   });
 
   @override
@@ -183,10 +211,14 @@ class _$PaymentMethodImpl implements _PaymentMethod {
   // 'credit_card', 'apple_pay'
   @override
   final bool isSelected;
+  @override
+  final String? expirationDate;
+  @override
+  final String? cvv;
 
   @override
   String toString() {
-    return 'PaymentMethod(id: $id, name: $name, cardNumber: $cardNumber, type: $type, isSelected: $isSelected)';
+    return 'PaymentMethod(id: $id, name: $name, cardNumber: $cardNumber, type: $type, isSelected: $isSelected, expirationDate: $expirationDate, cvv: $cvv)';
   }
 
   @override
@@ -200,12 +232,23 @@ class _$PaymentMethodImpl implements _PaymentMethod {
                 other.cardNumber == cardNumber) &&
             (identical(other.type, type) || other.type == type) &&
             (identical(other.isSelected, isSelected) ||
-                other.isSelected == isSelected));
+                other.isSelected == isSelected) &&
+            (identical(other.expirationDate, expirationDate) ||
+                other.expirationDate == expirationDate) &&
+            (identical(other.cvv, cvv) || other.cvv == cvv));
   }
 
   @override
-  int get hashCode =>
-      Object.hash(runtimeType, id, name, cardNumber, type, isSelected);
+  int get hashCode => Object.hash(
+    runtimeType,
+    id,
+    name,
+    cardNumber,
+    type,
+    isSelected,
+    expirationDate,
+    cvv,
+  );
 
   /// Create a copy of PaymentMethod
   /// with the given fields replaced by the non-null parameter values.
@@ -223,6 +266,8 @@ abstract class _PaymentMethod implements PaymentMethod {
     required final String cardNumber,
     required final String type,
     required final bool isSelected,
+    required final String? expirationDate,
+    required final String? cvv,
   }) = _$PaymentMethodImpl;
 
   @override
@@ -235,6 +280,10 @@ abstract class _PaymentMethod implements PaymentMethod {
   String get type; // 'credit_card', 'apple_pay'
   @override
   bool get isSelected;
+  @override
+  String? get expirationDate;
+  @override
+  String? get cvv;
 
   /// Create a copy of PaymentMethod
   /// with the given fields replaced by the non-null parameter values.

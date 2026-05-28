@@ -11,6 +11,38 @@ import 'package:flutter_riverpod/flutter_riverpod.dart';
 class CheckoutView extends ConsumerWidget {
   const CheckoutView({super.key});
 
+  Future<void> _handleProcessPayment(
+    BuildContext context,
+    WidgetRef ref,
+    double amount,
+  ) async {
+    try {
+      final response = await ref
+          .read(checkoutProvider.notifier)
+          .processPayment(amount);
+
+      if (!context.mounted) return;
+
+      ScaffoldMessenger.of(context).hideCurrentSnackBar();
+      ScaffoldMessenger.of(context).showSnackBar(
+        SnackBar(
+          content: Text(response.message),
+          backgroundColor: response.success ? Colors.green : Colors.red,
+        ),
+      );
+    } catch (_) {
+      if (!context.mounted) return;
+
+      ScaffoldMessenger.of(context).hideCurrentSnackBar();
+      ScaffoldMessenger.of(context).showSnackBar(
+        const SnackBar(
+          content: Text('No se pudo procesar el pago. Intenta nuevamente.'),
+          backgroundColor: Colors.red,
+        ),
+      );
+    }
+  }
+
   @override
   Widget build(BuildContext context, WidgetRef ref) {
     final state = ref.watch(checkoutProvider);
@@ -64,7 +96,7 @@ class CheckoutView extends ConsumerWidget {
                                 .selectPaymentMethod(method.id);
                           },
                         );
-                      }).toList(),
+                      }),
                       const SizedBox(height: 16),
                       // Botón "Add new card"
                       Center(
@@ -103,12 +135,8 @@ class CheckoutView extends ConsumerWidget {
               child: SizedBox(
                 width: double.infinity,
                 child: ElevatedButton(
-                  onPressed: () {
-                    ref.read(checkoutProvider.notifier).processPayment();
-                    // TODO: Consumo de API de pagos
-                    ScaffoldMessenger.of(context).showSnackBar(
-                      const SnackBar(content: Text('Procesando pago...')),
-                    );
+                  onPressed: () async {
+                    await _handleProcessPayment(context, ref, state.amount);
                   },
                   style: ElevatedButton.styleFrom(
                     backgroundColor: AppColors.primary,

@@ -5,12 +5,64 @@ import '../../../../core/theme/app_colors.dart';
 import '../state/add_payment_card_notifier.dart';
 import '../widgets/ecommerce_header.dart';
 
-class AddPaymentCardView extends ConsumerWidget {
+class AddPaymentCardView extends ConsumerStatefulWidget {
   const AddPaymentCardView({super.key});
 
   @override
-  Widget build(BuildContext context, WidgetRef ref) {
+  ConsumerState<AddPaymentCardView> createState() => _AddPaymentCardViewState();
+}
+
+class _AddPaymentCardViewState extends ConsumerState<AddPaymentCardView> {
+  late final TextEditingController _cardNumberController;
+  late final TextEditingController _expirationController;
+  late final TextEditingController _cvvController;
+
+  @override
+  void initState() {
+    super.initState();
+    final initialState = ref.read(addPaymentCardProvider);
+    _cardNumberController = TextEditingController(
+      text: initialState.cardNumber,
+    );
+    _expirationController = TextEditingController(
+      text: initialState.expirationDate,
+    );
+    _cvvController = TextEditingController(text: initialState.cvv);
+  }
+
+  @override
+  void dispose() {
+    _cardNumberController.dispose();
+    _expirationController.dispose();
+    _cvvController.dispose();
+    super.dispose();
+  }
+
+  @override
+  Widget build(BuildContext context) {
     final state = ref.watch(addPaymentCardProvider);
+
+    if (_cardNumberController.text != state.cardNumber) {
+      _cardNumberController.value = TextEditingValue(
+        text: state.cardNumber,
+        selection: TextSelection.collapsed(offset: state.cardNumber.length),
+      );
+    }
+
+    if (_expirationController.text != state.expirationDate) {
+      _expirationController.value = TextEditingValue(
+        text: state.expirationDate,
+        selection: TextSelection.collapsed(offset: state.expirationDate.length),
+      );
+    }
+
+    if (_cvvController.text != state.cvv) {
+      _cvvController.value = TextEditingValue(
+        text: state.cvv,
+        selection: TextSelection.collapsed(offset: state.cvv.length),
+      );
+    }
+
     return Scaffold(
       backgroundColor: AppColors.white,
       body: SafeArea(
@@ -48,9 +100,7 @@ class AddPaymentCardView extends ConsumerWidget {
                       ),
                       const SizedBox(height: 8),
                       TextField(
-                        controller: TextEditingController(
-                          text: state.cardNumber,
-                        ),
+                        controller: _cardNumberController,
                         keyboardType: TextInputType.number,
                         inputFormatters: [
                           FilteringTextInputFormatter.digitsOnly,
@@ -110,9 +160,7 @@ class AddPaymentCardView extends ConsumerWidget {
                                 ),
                                 const SizedBox(height: 8),
                                 TextField(
-                                  controller: TextEditingController(
-                                    text: state.expirationDate,
-                                  ),
+                                  controller: _expirationController,
                                   keyboardType: TextInputType.number,
                                   inputFormatters: [
                                     FilteringTextInputFormatter.digitsOnly,
@@ -172,9 +220,7 @@ class AddPaymentCardView extends ConsumerWidget {
                                 ),
                                 const SizedBox(height: 8),
                                 TextField(
-                                  controller: TextEditingController(
-                                    text: state.cvv,
-                                  ),
+                                  controller: _cvvController,
                                   keyboardType: TextInputType.number,
                                   inputFormatters: [
                                     FilteringTextInputFormatter.digitsOnly,
@@ -235,13 +281,13 @@ class AddPaymentCardView extends ConsumerWidget {
                 width: double.infinity,
                 child: ElevatedButton(
                   onPressed: () {
-                    ref.read(addPaymentCardProvider.notifier).saveCard();
-                    // TODO: Navegar de vuelta o cerrar
-                    ScaffoldMessenger.of(context).showSnackBar(
-                      const SnackBar(
-                        content: Text('Tarjeta guardada: por implementar'),
-                      ),
-                    );
+                    final saved = ref
+                        .read(addPaymentCardProvider.notifier)
+                        .saveCard();
+
+                    if (saved) {
+                      Navigator.of(context).pop();
+                    }
                   },
                   style: ElevatedButton.styleFrom(
                     backgroundColor: AppColors.primary,

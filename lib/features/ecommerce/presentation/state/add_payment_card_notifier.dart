@@ -1,9 +1,12 @@
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'add_payment_card_state.dart';
+import 'checkout_notifier.dart';
 
 /// Notifier que maneja la lógica de agregar una tarjeta de pago
 class AddPaymentCardNotifier extends StateNotifier<AddPaymentCardState> {
-  AddPaymentCardNotifier() : super(const AddPaymentCardState());
+  AddPaymentCardNotifier(this._ref) : super(const AddPaymentCardState());
+
+  final Ref _ref;
 
   /// Formatea el número de tarjeta con espacios cada 4 dígitos
   String _formatCardNumber(String value) {
@@ -46,10 +49,30 @@ class AddPaymentCardNotifier extends StateNotifier<AddPaymentCardState> {
     state = state.copyWith(cvv: value);
   }
 
-  /// Guarda la tarjeta
-  void saveCard() {
-    // TODO: Validar y guardar tarjeta
-    // Por ahora es un placeholder
+  /// Guarda la tarjeta y retorna true si se guardó correctamente
+  bool saveCard() {
+    final cardNumber = state.cardNumber.replaceAll(' ', '');
+    final expiration = state.expirationDate.replaceAll('/', '');
+    final cvv = state.cvv;
+
+    final isValidCard = cardNumber.length == 16;
+    final isValidExpiration = expiration.length == 4;
+    final isValidCvv = cvv.length == 3;
+
+    if (!isValidCard || !isValidExpiration || !isValidCvv) {
+      return false;
+    }
+
+    _ref
+        .read(checkoutProvider.notifier)
+        .addPaymentMethod(
+          cardNumber: state.cardNumber,
+          expirationDate: state.expirationDate,
+          cvv: state.cvv,
+        );
+
+    reset();
+    return true;
   }
 
   /// Resetea el formulario
@@ -61,5 +84,5 @@ class AddPaymentCardNotifier extends StateNotifier<AddPaymentCardState> {
 /// Provider del notifier de agregar tarjeta de pago
 final addPaymentCardProvider =
     StateNotifierProvider<AddPaymentCardNotifier, AddPaymentCardState>((ref) {
-      return AddPaymentCardNotifier();
+      return AddPaymentCardNotifier(ref);
     });

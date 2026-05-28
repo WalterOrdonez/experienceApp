@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_prototype/core/navigation/app_router.dart';
+import 'package:flutter_prototype/features/ecommerce/presentation/state/checkout_notifier.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import '../../../../core/theme/app_colors.dart';
 import '../state/cart_notifier.dart';
@@ -48,6 +49,7 @@ class CartView extends ConsumerWidget {
             CartFooter(
               total: state.total,
               onCheckout: () {
+                ref.read(checkoutProvider.notifier).setAmount(state.total);
                 ref.read(routerProvider).push(AppRoutes.checkout);
               },
             ),

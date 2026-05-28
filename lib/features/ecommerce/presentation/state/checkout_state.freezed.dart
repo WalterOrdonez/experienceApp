@@ -22,6 +22,7 @@ mixin _$CheckoutState {
   List<PaymentMethod> get paymentMethods => throw _privateConstructorUsedError;
   String get selectedPaymentId => throw _privateConstructorUsedError;
   bool get billingAddressSameAsShipping => throw _privateConstructorUsedError;
+  double get amount => throw _privateConstructorUsedError;
 
   /// Create a copy of CheckoutState
   /// with the given fields replaced by the non-null parameter values.
@@ -42,6 +43,7 @@ abstract class $CheckoutStateCopyWith<$Res> {
     List<PaymentMethod> paymentMethods,
     String selectedPaymentId,
     bool billingAddressSameAsShipping,
+    double amount,
   });
 }
 
@@ -64,6 +66,7 @@ class _$CheckoutStateCopyWithImpl<$Res, $Val extends CheckoutState>
     Object? paymentMethods = null,
     Object? selectedPaymentId = null,
     Object? billingAddressSameAsShipping = null,
+    Object? amount = null,
   }) {
     return _then(
       _value.copyWith(
@@ -83,6 +86,10 @@ class _$CheckoutStateCopyWithImpl<$Res, $Val extends CheckoutState>
                 ? _value.billingAddressSameAsShipping
                 : billingAddressSameAsShipping // ignore: cast_nullable_to_non_nullable
                       as bool,
+            amount: null == amount
+                ? _value.amount
+                : amount // ignore: cast_nullable_to_non_nullable
+                      as double,
           )
           as $Val,
     );
@@ -103,6 +110,7 @@ abstract class _$$CheckoutStateImplCopyWith<$Res>
     List<PaymentMethod> paymentMethods,
     String selectedPaymentId,
     bool billingAddressSameAsShipping,
+    double amount,
   });
 }
 
@@ -124,6 +132,7 @@ class __$$CheckoutStateImplCopyWithImpl<$Res>
     Object? paymentMethods = null,
     Object? selectedPaymentId = null,
     Object? billingAddressSameAsShipping = null,
+    Object? amount = null,
   }) {
     return _then(
       _$CheckoutStateImpl(
@@ -143,6 +152,10 @@ class __$$CheckoutStateImplCopyWithImpl<$Res>
             ? _value.billingAddressSameAsShipping
             : billingAddressSameAsShipping // ignore: cast_nullable_to_non_nullable
                   as bool,
+        amount: null == amount
+            ? _value.amount
+            : amount // ignore: cast_nullable_to_non_nullable
+                  as double,
       ),
     );
   }
@@ -156,6 +169,7 @@ class _$CheckoutStateImpl implements _CheckoutState {
     final List<PaymentMethod> paymentMethods = const [],
     this.selectedPaymentId = '',
     this.billingAddressSameAsShipping = true,
+    this.amount = 0.0,
   }) : _paymentMethods = paymentMethods;
 
   @override
@@ -178,10 +192,13 @@ class _$CheckoutStateImpl implements _CheckoutState {
   @override
   @JsonKey()
   final bool billingAddressSameAsShipping;
+  @override
+  @JsonKey()
+  final double amount;
 
   @override
   String toString() {
-    return 'CheckoutState(currentStep: $currentStep, paymentMethods: $paymentMethods, selectedPaymentId: $selectedPaymentId, billingAddressSameAsShipping: $billingAddressSameAsShipping)';
+    return 'CheckoutState(currentStep: $currentStep, paymentMethods: $paymentMethods, selectedPaymentId: $selectedPaymentId, billingAddressSameAsShipping: $billingAddressSameAsShipping, amount: $amount)';
   }
 
   @override
@@ -202,7 +219,8 @@ class _$CheckoutStateImpl implements _CheckoutState {
                   billingAddressSameAsShipping,
                 ) ||
                 other.billingAddressSameAsShipping ==
-                    billingAddressSameAsShipping));
+                    billingAddressSameAsShipping) &&
+            (identical(other.amount, amount) || other.amount == amount));
   }
 
   @override
@@ -212,6 +230,7 @@ class _$CheckoutStateImpl implements _CheckoutState {
     const DeepCollectionEquality().hash(_paymentMethods),
     selectedPaymentId,
     billingAddressSameAsShipping,
+    amount,
   );
 
   /// Create a copy of CheckoutState
@@ -229,6 +248,7 @@ abstract class _CheckoutState implements CheckoutState {
     final List<PaymentMethod> paymentMethods,
     final String selectedPaymentId,
     final bool billingAddressSameAsShipping,
+    final double amount,
   }) = _$CheckoutStateImpl;
 
   @override
@@ -239,6 +259,8 @@ abstract class _CheckoutState implements CheckoutState {
   String get selectedPaymentId;
   @override
   bool get billingAddressSameAsShipping;
+  @override
+  double get amount;
 
   /// Create a copy of CheckoutState
   /// with the given fields replaced by the non-null parameter values.

@@ -11,5 +11,18 @@ class CheckoutState with _$CheckoutState {
     @Default([]) List<PaymentMethod> paymentMethods,
     @Default('') String selectedPaymentId,
     @Default(true) bool billingAddressSameAsShipping,
+    @Default(0.0) double amount,
   }) = _CheckoutState;
+}
+
+extension CheckoutStateX on CheckoutState {
+  int get nextPaymentMethodId {
+    final maxId = paymentMethods
+        .map((method) => int.tryParse(method.id) ?? 0)
+        .fold<int>(0, (previous, current) {
+          return current > previous ? current : previous;
+        });
+
+    return maxId + 1;
+  }
 }

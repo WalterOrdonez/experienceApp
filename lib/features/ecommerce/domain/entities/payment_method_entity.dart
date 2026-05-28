@@ -10,5 +10,7 @@ class PaymentMethod with _$PaymentMethod {
     required String cardNumber,
     required String type, // 'credit_card', 'apple_pay'
     required bool isSelected,
+    required String? expirationDate,
+    required String? cvv,
   }) = _PaymentMethod;
 }
