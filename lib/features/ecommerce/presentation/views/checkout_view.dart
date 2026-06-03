@@ -30,9 +30,9 @@ class CheckoutView extends ConsumerWidget {
           backgroundColor: response.success ? Colors.green : Colors.red,
         ),
       );
-    } catch (_) {
+    } catch (_error) {
       if (!context.mounted) return;
-
+      print('Error al procesar el pago: $_error');
       ScaffoldMessenger.of(context).hideCurrentSnackBar();
       ScaffoldMessenger.of(context).showSnackBar(
         const SnackBar(

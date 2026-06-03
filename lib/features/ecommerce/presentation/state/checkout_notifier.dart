@@ -26,7 +26,7 @@ class CheckoutNotifier extends StateNotifier<CheckoutState> {
             PaymentMethod(
               id: '2',
               name: 'Visa',
-              cardNumber: 'xxxx xxxx xxxx 9876',
+              cardNumber: '5555 5555 5555 4444',
               type: 'credit_card',
               isSelected: false,
               expirationDate: '11/23',

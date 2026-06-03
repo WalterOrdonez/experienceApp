@@ -1,0 +1,23 @@
+{
+    "flutter": {
+        "platforms": {
+            "android": {
+                "default": {
+                    "projectId": "ecommerce-waordone",
+                    "appId": "1:782659645882:android:0b635b2cc025067bb9ad83",
+                    "fileOutput": "android/app/google-services.json"
+                }
+            },
+            "dart": {
+                "lib/firebase_options.dart": {
+                    "projectId": "ecommerce-waordone",
+                    "configurations": {
+                        "android": "1:782659645882:android:0b635b2cc025067bb9ad83",
+                        "web": "1:782659645882:web:168fd0cb3474bb3fb9ad83",
+                        "windows": "1:782659645882:web:0ae0bad323cd7b8fb9ad83"
+                    }
+                }
+            }
+        }
+    }
+}

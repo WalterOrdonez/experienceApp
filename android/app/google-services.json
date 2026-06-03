@@ -1,0 +1,68 @@
+{
+  "project_info": {
+    "project_number": "782659645882",
+    "project_id": "ecommerce-waordone",
+    "storage_bucket": "ecommerce-waordone.firebasestorage.app"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:782659645882:android:dee3636385c9d9c5b9ad83",
+        "android_client_info": {
+          "package_name": "com.bam.ecommerce"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "782659645882-nqvn1pokfnsj7d0637l2tcsj7sdvgito.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyD2WV0yvqd8IwDCt5i_Dg9QL_3oKHHctao"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "782659645882-nqvn1pokfnsj7d0637l2tcsj7sdvgito.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    },
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:782659645882:android:0b635b2cc025067bb9ad83",
+        "android_client_info": {
+          "package_name": "com.example.flutter_prototype"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "782659645882-nqvn1pokfnsj7d0637l2tcsj7sdvgito.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyD2WV0yvqd8IwDCt5i_Dg9QL_3oKHHctao"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "782659645882-nqvn1pokfnsj7d0637l2tcsj7sdvgito.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
