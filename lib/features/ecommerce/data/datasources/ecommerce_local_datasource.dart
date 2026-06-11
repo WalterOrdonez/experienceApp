@@ -1,9 +1,12 @@
 import 'package:flutter_prototype/features/ecommerce/data/models/product_model.dart';
 
+import 'ecommerce_datasource.dart';
+
 /// Fuente de datos local para productos Sugeridos
-class EcommerceLocalDatasource {
+class EcommerceLocalDatasource extends EcommerceDatasource {
   /// Retorna las imágenes del carrusel del onboarding
-  List<ProductModel> getSuggestions() {
+  @override
+  Future<List<ProductModel>> getSuggestions() async {
     return [
       ProductModel(
         id: '1',

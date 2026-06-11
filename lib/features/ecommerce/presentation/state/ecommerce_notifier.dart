@@ -1,5 +1,6 @@
 import 'package:flutter_riverpod/flutter_riverpod.dart';
-import '../../data/datasources/ecommerce_local_datasource.dart';
+import 'package:cloud_firestore/cloud_firestore.dart';
+import '../../data/datasources/ecommerce_firestore_datasource.dart';
 import '../../data/repositories/ecommerce_repository_impl.dart';
 import '../../domain/usecases/get_suggestions.dart';
 import 'ecommerce_state.dart';
@@ -13,8 +14,8 @@ class EcommerceNotifier extends StateNotifier<EcommerceState> {
   }
 
   /// Carga datos iniciales (banners y productos sugeridos)
-  void _loadInitialData() {
-    final suggestions = _getSuggestions();
+  Future<void> _loadInitialData() async {
+    final suggestions = await _getSuggestions();
     state = state.copyWith(
       bannerImages: [
         'assets/images/banner_1.png',
@@ -39,8 +40,10 @@ class EcommerceNotifier extends StateNotifier<EcommerceState> {
 /// Provider del notifier de Ecommerce
 final ecommerceProvider =
     StateNotifierProvider<EcommerceNotifier, EcommerceState>((ref) {
-      final datasource = EcommerceLocalDatasource();
-      final repository = EcommerceRepositoryImpl(localDatasource: datasource);
+      final datasource = EcommerceFirestoreDatasource(
+        firestore: FirebaseFirestore.instance,
+      );
+      final repository = EcommerceRepositoryImpl(datasource: datasource);
       final getSuggestions = GetSuggestions(repository);
       return EcommerceNotifier(getSuggestions);
     });

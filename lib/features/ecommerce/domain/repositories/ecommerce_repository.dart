@@ -2,5 +2,5 @@ import 'package:flutter_prototype/features/ecommerce/domain/entities/product_ent
 
 /// Contrato del repositorio de Ecommerce
 abstract class EcommerceRepository {
-  List<ProductEntity> getSuggestions();
+  Future<List<ProductEntity>> getSuggestions();
 }

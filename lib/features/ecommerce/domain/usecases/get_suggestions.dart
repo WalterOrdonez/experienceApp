@@ -7,7 +7,7 @@ class GetSuggestions {
 
   const GetSuggestions(this.repository);
 
-  List<ProductEntity> call() {
+  Future<List<ProductEntity>> call() {
     return repository.getSuggestions();
   }
 }

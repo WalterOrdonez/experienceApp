@@ -1,20 +1,18 @@
-import 'package:flutter_prototype/features/ecommerce/data/models/product_model.dart';
-
 import '../../domain/entities/product_entity.dart';
 import '../../domain/repositories/ecommerce_repository.dart';
-import '../datasources/ecommerce_local_datasource.dart';
+import '../datasources/ecommerce_datasource.dart';
 
 /// Implementación del repositorio de Ecommerce usando datasource local
 class EcommerceRepositoryImpl implements EcommerceRepository {
-  final EcommerceLocalDatasource localDatasource;
+  final EcommerceDatasource datasource;
 
-  const EcommerceRepositoryImpl({required this.localDatasource});
+  const EcommerceRepositoryImpl({required this.datasource});
 
   @override
-  List<ProductEntity> getSuggestions() {
-    List<ProductModel> sugestions = localDatasource.getSuggestions();
+  Future<List<ProductEntity>> getSuggestions() async {
+    final suggestions = await datasource.getSuggestions();
 
-    return sugestions
+    return suggestions
         .map((product) => ProductEntity.fromModel(product))
         .toList();
   }
