@@ -3,10 +3,13 @@ import '../../domain/entities/product_entity.dart';
 import 'package:freezed_annotation/freezed_annotation.dart';
 
 part 'cart_item_model.freezed.dart';
+part 'cart_item_model.g.dart';
 
 /// Modelo de datos para serializar/deserializar un item del carrito
 @freezed
 class CartItemModel with _$CartItemModel {
+  const CartItemModel._();
+
   const factory CartItemModel({
     @Default('') String productId,
     @Default('') String productName,
@@ -19,41 +22,9 @@ class CartItemModel with _$CartItemModel {
     @Default(0) int selectedColor,
   }) = _CartItemModel;
 
-  const CartItemModel._();
-
   /// Convierte desde JSON (Map)
-  factory CartItemModel.fromJson(Map<String, dynamic> json) {
-    return CartItemModel(
-      productId: json['productId'] as String,
-      productName: json['productName'] as String,
-      productImagePath: json['productImagePath'] as String,
-      productPrice: (json['productPrice'] as num).toDouble(),
-      productSizes: (json['productSizes'] as List<dynamic>)
-          .map((e) => e as String)
-          .toList(),
-      productColors: (json['productColors'] as List<dynamic>)
-          .map((e) => e as int)
-          .toList(),
-      quantity: json['quantity'] as int,
-      selectedSize: json['selectedSize'] as String,
-      selectedColor: json['selectedColor'] as int,
-    );
-  }
-
-  /// Convierte a JSON (Map)
-  Map<String, dynamic> toJson() {
-    return {
-      'productId': productId,
-      'productName': productName,
-      'productImagePath': productImagePath,
-      'productPrice': productPrice,
-      'productSizes': productSizes,
-      'productColors': productColors,
-      'quantity': quantity,
-      'selectedSize': selectedSize,
-      'selectedColor': selectedColor,
-    };
-  }
+  factory CartItemModel.fromJson(Map<String, dynamic> json) =>
+      _$CartItemModelFromJson(json);
 
   /// Convierte desde la entidad de dominio
   factory CartItemModel.fromEntity(CartItemEntity entity) {

@@ -15,6 +15,10 @@ final _privateConstructorUsedError = UnsupportedError(
   'It seems like you constructed your class using `MyClass._()`. This constructor is only meant to be used by freezed and you are not supposed to need it nor use it.\nPlease check the documentation here for more information: https://github.com/rrousselGit/freezed#adding-getters-and-methods-to-our-models',
 );
 
+CartItemModel _$CartItemModelFromJson(Map<String, dynamic> json) {
+  return _CartItemModel.fromJson(json);
+}
+
 /// @nodoc
 mixin _$CartItemModel {
   String get productId => throw _privateConstructorUsedError;
@@ -26,6 +30,9 @@ mixin _$CartItemModel {
   int get quantity => throw _privateConstructorUsedError;
   String get selectedSize => throw _privateConstructorUsedError;
   int get selectedColor => throw _privateConstructorUsedError;
+
+  /// Serializes this CartItemModel to a JSON map.
+  Map<String, dynamic> toJson() => throw _privateConstructorUsedError;
 
   /// Create a copy of CartItemModel
   /// with the given fields replaced by the non-null parameter values.
@@ -213,7 +220,7 @@ class __$$CartItemModelImplCopyWithImpl<$Res>
 }
 
 /// @nodoc
-
+@JsonSerializable()
 class _$CartItemModelImpl extends _CartItemModel {
   const _$CartItemModelImpl({
     this.productId = '',
@@ -228,6 +235,9 @@ class _$CartItemModelImpl extends _CartItemModel {
   }) : _productSizes = productSizes,
        _productColors = productColors,
        super._();
+
+  factory _$CartItemModelImpl.fromJson(Map<String, dynamic> json) =>
+      _$$CartItemModelImplFromJson(json);
 
   @override
   @JsonKey()
@@ -303,6 +313,7 @@ class _$CartItemModelImpl extends _CartItemModel {
                 other.selectedColor == selectedColor));
   }
 
+  @JsonKey(includeFromJson: false, includeToJson: false)
   @override
   int get hashCode => Object.hash(
     runtimeType,
@@ -324,6 +335,11 @@ class _$CartItemModelImpl extends _CartItemModel {
   @pragma('vm:prefer-inline')
   _$$CartItemModelImplCopyWith<_$CartItemModelImpl> get copyWith =>
       __$$CartItemModelImplCopyWithImpl<_$CartItemModelImpl>(this, _$identity);
+
+  @override
+  Map<String, dynamic> toJson() {
+    return _$$CartItemModelImplToJson(this);
+  }
 }
 
 abstract class _CartItemModel extends CartItemModel {
@@ -339,6 +355,9 @@ abstract class _CartItemModel extends CartItemModel {
     final int selectedColor,
   }) = _$CartItemModelImpl;
   const _CartItemModel._() : super._();
+
+  factory _CartItemModel.fromJson(Map<String, dynamic> json) =
+      _$CartItemModelImpl.fromJson;
 
   @override
   String get productId;

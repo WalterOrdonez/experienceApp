@@ -1,4 +1,5 @@
 import 'package:flutter_prototype/features/ecommerce/presentation/views/add_payment_card_view.dart';
+import 'package:flutter_prototype/features/administrator/presentation/views/products_view.dart';
 import 'package:flutter_prototype/features/ecommerce/presentation/views/cart_view.dart';
 import 'package:flutter_prototype/features/ecommerce/presentation/views/checkout_view.dart';
 import 'package:flutter_prototype/features/ecommerce/presentation/views/ecommerce_detail_view.dart';
@@ -30,6 +31,10 @@ final routerProvider = Provider<GoRouter>((ref) {
         builder: (context, state) => const EcommerceView(),
       ),
       GoRoute(
+        path: AppRoutes.adminProducts,
+        builder: (context, state) => const ProductsView(),
+      ),
+      GoRoute(
         path: AppRoutes.ecommerceDetail,
         builder: (context, state) => const EcommerceDetailView(),
       ),
@@ -55,6 +60,7 @@ abstract class AppRoutes {
   static const onboarding = '/onboarding';
   static const onboardingNext = '/onboarding-next';
   static const ecommerce = '/ecommerce';
+  static const adminProducts = '/admin-products';
   static const ecommerceDetail = '/ecommerce-detail';
   static const cart = '/cart';
   static const addPaymentCard = '/add-payment-card';
