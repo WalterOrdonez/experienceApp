@@ -9,31 +9,34 @@ import 'ecommerce_state.dart';
 class EcommerceNotifier extends StateNotifier<EcommerceState> {
   final GetSuggestions _getSuggestions;
 
-  EcommerceNotifier(this._getSuggestions) : super(const EcommerceState()) {
+  EcommerceNotifier(this._getSuggestions)
+    : super(const EcommerceState.initial()) {
     _loadInitialData();
   }
 
   /// Carga datos iniciales (banners y productos sugeridos)
   Future<void> _loadInitialData() async {
     final suggestions = await _getSuggestions();
-    state = state.copyWith(
+    state = EcommerceState.loaded(
+      currentBannerIndex: 0,
       bannerImages: [
         'assets/images/banner_1.png',
         'assets/images/banner_2.png',
         'assets/images/banner_3.png',
       ],
       newArrivals: suggestions,
+      selectedNavIndex: 0,
     );
   }
 
   /// Actualiza el índice del banner actual en el carrusel
   void setCurrentBannerIndex(int index) {
-    state = state.copyWith(currentBannerIndex: index);
+    state = EcommerceState.setCurrentBannerIndex(index);
   }
 
   /// Actualiza el tab seleccionado en la barra de navegación
   void setSelectedNavIndex(int index) {
-    state = state.copyWith(selectedNavIndex: index);
+    state = EcommerceState.selectNavigationIndex(index);
   }
 }
 

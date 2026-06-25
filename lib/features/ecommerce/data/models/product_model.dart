@@ -1,3 +1,4 @@
+import 'package:flutter_prototype/features/ecommerce/domain/entities/product_entity.dart';
 import 'package:freezed_annotation/freezed_annotation.dart';
 
 part 'product_model.freezed.dart';
@@ -17,4 +18,24 @@ class ProductModel with _$ProductModel {
 
   factory ProductModel.fromJson(Map<String, dynamic> json) =>
       _$ProductModelFromJson(json);
+}
+
+// otra forma de crear to Entity
+extension ProductModelX on ProductModel {
+  ProductEntity toEntity() {
+    return ProductEntity(
+      id: id,
+      name: name,
+      imagePath: imagePath,
+      price: price,
+      size: size,
+      color: color,
+    );
+  }
+}
+
+extension ProductListX on List<ProductModel> {
+  List<ProductEntity> toEntityList() {
+    return map((product) => product.toEntity()).toList();
+  }
 }

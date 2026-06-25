@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import '../../../../core/theme/app_colors.dart';
 import '../state/ecommerce_notifier.dart';
+import '../state/ecommerce_state.dart';
 import '../widgets/ecommerce_banner_carousel.dart';
 import '../widgets/ecommerce_bottom_nav_bar.dart';
 import '../widgets/ecommerce_product_list.dart';
@@ -48,9 +49,9 @@ class _EcommerceViewState extends ConsumerState<EcommerceView> {
                       const SizedBox(height: 24),
                       // Carrusel de banners promocionales
                       EcommerceBannerCarousel(
-                        images: state.bannerImages,
+                        images: state.safeBannerImages,
                         pageController: _bannerController,
-                        currentIndex: state.currentBannerIndex,
+                        currentIndex: state.safeCurrentBannerIndex,
                         onPageChanged: (index) {
                           ref
                               .read(ecommerceProvider.notifier)
@@ -61,7 +62,7 @@ class _EcommerceViewState extends ConsumerState<EcommerceView> {
                       // Listado de productos "New Arrival"
                       EcommerceProductList(
                         title: 'New Arrival',
-                        products: state.newArrivals,
+                        products: state.safeNewArrivals,
                       ),
                       const SizedBox(height: 24),
                     ],
@@ -71,7 +72,7 @@ class _EcommerceViewState extends ConsumerState<EcommerceView> {
             ),
             // Barra de navegación inferior
             EcommerceBottomNavBar(
-              selectedIndex: state.selectedNavIndex,
+              selectedIndex: state.safeSelectedNavIndex,
               onItemTapped: (index) {
                 ref.read(ecommerceProvider.notifier).setSelectedNavIndex(index);
               },

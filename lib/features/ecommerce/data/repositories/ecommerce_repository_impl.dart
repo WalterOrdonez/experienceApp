@@ -1,3 +1,5 @@
+import 'package:flutter_prototype/features/ecommerce/data/models/product_model.dart';
+
 import '../../domain/entities/product_entity.dart';
 import '../../domain/repositories/ecommerce_repository.dart';
 import '../datasources/ecommerce_datasource.dart';
@@ -12,8 +14,6 @@ class EcommerceRepositoryImpl implements EcommerceRepository {
   Future<List<ProductEntity>> getSuggestions() async {
     final suggestions = await datasource.getSuggestions();
 
-    return suggestions
-        .map((product) => ProductEntity.fromModel(product))
-        .toList();
+    return suggestions.toEntityList();
   }
 }
