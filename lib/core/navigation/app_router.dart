@@ -7,6 +7,7 @@ import 'package:flutter_prototype/features/ecommerce/presentation/views/ecommerc
 import 'package:flutter_prototype/features/login/presentation/views/login_view.dart';
 import 'package:flutter_prototype/features/onboarding/presentation/views/onboarding_next_view.dart';
 import 'package:flutter_prototype/features/onboarding/presentation/views/onboarding_view.dart';
+import 'package:flutter_prototype/features/sales/presentation/views/sales_dashboard_view.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:go_router/go_router.dart';
 
@@ -50,6 +51,10 @@ final routerProvider = Provider<GoRouter>((ref) {
         path: AppRoutes.addPaymentCard,
         builder: (context, state) => const AddPaymentCardView(),
       ),
+      GoRoute(
+        path: AppRoutes.salesDashboard,
+        builder: (context, state) => const SalesDashboardView(),
+      ),
     ],
   );
 });
@@ -65,4 +70,5 @@ abstract class AppRoutes {
   static const cart = '/cart';
   static const addPaymentCard = '/add-payment-card';
   static const checkout = '/checkout';
+  static const salesDashboard = '/sales-dashboard';
 }
