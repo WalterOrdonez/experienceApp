@@ -5,8 +5,14 @@ import 'package:flutter_prototype/features/sales/presentation/state/sales_dashbo
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 
 final salesDashboardProvider =
-    StateNotifierProvider<SalesDashboardNotifier, SalesDashboardState>(
-      (ref) => SalesDashboardNotifier(),
+    StateNotifierProvider.autoDispose<SalesDashboardNotifier, SalesDashboardState>(
+      (ref) {
+        final notifier = SalesDashboardNotifier();
+        ref.onDispose(() {
+          notifier.dispose();
+        });
+        return notifier;
+      },
     );
 
 class SalesDashboardNotifier extends StateNotifier<SalesDashboardState> {
