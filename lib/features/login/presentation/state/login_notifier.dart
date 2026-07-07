@@ -1,9 +1,7 @@
 import 'dart:developer' as developer;
 
 import 'package:firebase_auth/firebase_auth.dart';
-import 'package:flutter_prototype/features/login/data/datasources/login_firebase_datasource.dart';
 import 'package:flutter_prototype/features/login/data/models/user_password_model.dart';
-import 'package:flutter_prototype/features/login/data/repositories/login_repository_impl.dart';
 import 'package:flutter_prototype/features/login/domain/usecases/is_user_logged.dart';
 import 'package:flutter_prototype/features/login/domain/usecases/login_user.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
@@ -14,8 +12,10 @@ class LoginNotifier extends StateNotifier<LoginState> {
   final LoginUser _loginUser;
   final IsUserLogged _isUserLogged;
 
-  LoginNotifier(this._loginUser, this._isUserLogged)
-    : super(const LoginState()) {
+  LoginNotifier({LoginUser? loginUser, IsUserLogged? isUserLogged})
+    : _loginUser = loginUser ?? LoginUser(),
+      _isUserLogged = isUserLogged ?? IsUserLogged(),
+      super(const LoginState()) {
     checkSession();
   }
 
@@ -132,8 +132,5 @@ class LoginNotifier extends StateNotifier<LoginState> {
 }
 
 final loginProvider = StateNotifierProvider<LoginNotifier, LoginState>((ref) {
-  final datasource = FirebaseLoginDatasource(auth: FirebaseAuth.instance);
-  final repository = LoginRepositoryImpl(datasource: datasource);
-
-  return LoginNotifier(LoginUser(repository), IsUserLogged(repository));
+  return LoginNotifier();
 });
