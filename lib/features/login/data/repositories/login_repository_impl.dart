@@ -28,4 +28,10 @@ class LoginRepositoryImpl implements LoginRepository {
   Future<bool> logout() {
     return _datasource.logout();
   }
+
+  @override
+  Future<UserEntity?> getCurrentUser() async {
+    final model = await _datasource.getCurrentUser();
+    return model != null ? UserEntity.fromModel(model) : null;
+  }
 }

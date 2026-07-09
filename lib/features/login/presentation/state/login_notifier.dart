@@ -2,6 +2,7 @@ import 'dart:developer' as developer;
 
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter_prototype/features/login/data/models/user_password_model.dart';
+import 'package:flutter_prototype/features/login/domain/usecases/get_current_user.dart';
 import 'package:flutter_prototype/features/login/domain/usecases/is_user_logged.dart';
 import 'package:flutter_prototype/features/login/domain/usecases/login_user.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
@@ -11,11 +12,16 @@ import 'login_state.dart';
 class LoginNotifier extends StateNotifier<LoginState> {
   final LoginUser _loginUser;
   final IsUserLogged _isUserLogged;
+  final GetCurrentUser _getCurrentUser;
 
-  LoginNotifier({LoginUser? loginUser, IsUserLogged? isUserLogged})
-    : _loginUser = loginUser ?? LoginUser(),
-      _isUserLogged = isUserLogged ?? IsUserLogged(),
-      super(const LoginState()) {
+  LoginNotifier({
+    LoginUser? loginUser,
+    IsUserLogged? isUserLogged,
+    GetCurrentUser? getCurrentUser,
+  }) : _loginUser = loginUser ?? LoginUser(),
+       _isUserLogged = isUserLogged ?? IsUserLogged(),
+       _getCurrentUser = getCurrentUser ?? GetCurrentUser(),
+       super(const LoginState()) {
     checkSession();
   }
 
@@ -33,7 +39,16 @@ class LoginNotifier extends StateNotifier<LoginState> {
 
   Future<void> checkSession() async {
     final hasSession = await _isUserLogged();
-    state = state.copyWith(isCheckingSession: false, isLogged: hasSession);
+    if (hasSession) {
+      final user = await _getCurrentUser();
+      state = state.copyWith(
+        isCheckingSession: false,
+        isLogged: true,
+        user: user,
+      );
+    } else {
+      state = state.copyWith(isCheckingSession: false, isLogged: false);
+    }
   }
 
   Future<void> login() async {

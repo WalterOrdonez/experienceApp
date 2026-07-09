@@ -8,4 +8,6 @@ abstract class LoginDatasource {
   Future<bool> isLogged();
 
   Future<bool> logout();
+
+  Future<UserModel?> getCurrentUser();
 }

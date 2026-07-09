@@ -8,4 +8,6 @@ abstract class LoginRepository {
   Future<bool> isLogged();
 
   Future<bool> logout();
+
+  Future<UserEntity?> getCurrentUser();
 }

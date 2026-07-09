@@ -153,6 +153,13 @@ Message: $message''';
     );
   }
 
+  @override
+  Future<UserModel?> getCurrentUser() async {
+    final current = _auth.currentUser;
+    if (current == null) return null;
+    return _mapFirebaseUser(current);
+  }
+
   String _maskEmail(String email) {
     final parts = email.split('@');
     if (parts.length != 2 || parts.first.isEmpty) {
