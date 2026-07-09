@@ -10,9 +10,9 @@ class SalesRepositoryImpl extends SalesRepository {
     : _dataSource = dataSource ?? SalesFirestoreDatasource();
 
   @override
-  Stream<List<Sale>> getSalesStream() {
-    return _dataSource.getSalesmodelsStream().map(
-      (list) => list.toEntityList(),
-    );
+  Stream<List<Sale>> getSalesStream({required String userId}) {
+    return _dataSource
+        .getSalesmodelsStream(userId: userId)
+        .map((list) => list.toEntityList());
   }
 }

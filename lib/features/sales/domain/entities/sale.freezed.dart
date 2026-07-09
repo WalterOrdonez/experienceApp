@@ -17,7 +17,10 @@ final _privateConstructorUsedError = UnsupportedError(
 
 /// @nodoc
 mixin _$Sale {
+  String get id => throw _privateConstructorUsedError;
   double get total => throw _privateConstructorUsedError;
+  String get usuario => throw _privateConstructorUsedError;
+  DateTime get date => throw _privateConstructorUsedError;
 
   /// Create a copy of Sale
   /// with the given fields replaced by the non-null parameter values.
@@ -30,7 +33,7 @@ abstract class $SaleCopyWith<$Res> {
   factory $SaleCopyWith(Sale value, $Res Function(Sale) then) =
       _$SaleCopyWithImpl<$Res, Sale>;
   @useResult
-  $Res call({double total});
+  $Res call({String id, double total, String usuario, DateTime date});
 }
 
 /// @nodoc
@@ -47,13 +50,30 @@ class _$SaleCopyWithImpl<$Res, $Val extends Sale>
   /// with the given fields replaced by the non-null parameter values.
   @pragma('vm:prefer-inline')
   @override
-  $Res call({Object? total = null}) {
+  $Res call({
+    Object? id = null,
+    Object? total = null,
+    Object? usuario = null,
+    Object? date = null,
+  }) {
     return _then(
       _value.copyWith(
+            id: null == id
+                ? _value.id
+                : id // ignore: cast_nullable_to_non_nullable
+                      as String,
             total: null == total
                 ? _value.total
                 : total // ignore: cast_nullable_to_non_nullable
                       as double,
+            usuario: null == usuario
+                ? _value.usuario
+                : usuario // ignore: cast_nullable_to_non_nullable
+                      as String,
+            date: null == date
+                ? _value.date
+                : date // ignore: cast_nullable_to_non_nullable
+                      as DateTime,
           )
           as $Val,
     );
@@ -68,7 +88,7 @@ abstract class _$$SaleImplCopyWith<$Res> implements $SaleCopyWith<$Res> {
   ) = __$$SaleImplCopyWithImpl<$Res>;
   @override
   @useResult
-  $Res call({double total});
+  $Res call({String id, double total, String usuario, DateTime date});
 }
 
 /// @nodoc
@@ -82,13 +102,30 @@ class __$$SaleImplCopyWithImpl<$Res>
   /// with the given fields replaced by the non-null parameter values.
   @pragma('vm:prefer-inline')
   @override
-  $Res call({Object? total = null}) {
+  $Res call({
+    Object? id = null,
+    Object? total = null,
+    Object? usuario = null,
+    Object? date = null,
+  }) {
     return _then(
       _$SaleImpl(
+        id: null == id
+            ? _value.id
+            : id // ignore: cast_nullable_to_non_nullable
+                  as String,
         total: null == total
             ? _value.total
             : total // ignore: cast_nullable_to_non_nullable
                   as double,
+        usuario: null == usuario
+            ? _value.usuario
+            : usuario // ignore: cast_nullable_to_non_nullable
+                  as String,
+        date: null == date
+            ? _value.date
+            : date // ignore: cast_nullable_to_non_nullable
+                  as DateTime,
       ),
     );
   }
@@ -97,14 +134,25 @@ class __$$SaleImplCopyWithImpl<$Res>
 /// @nodoc
 
 class _$SaleImpl implements _Sale {
-  const _$SaleImpl({required this.total});
+  const _$SaleImpl({
+    required this.id,
+    required this.total,
+    required this.usuario,
+    required this.date,
+  });
 
   @override
+  final String id;
+  @override
   final double total;
+  @override
+  final String usuario;
+  @override
+  final DateTime date;
 
   @override
   String toString() {
-    return 'Sale(total: $total)';
+    return 'Sale(id: $id, total: $total, usuario: $usuario, date: $date)';
   }
 
   @override
@@ -112,11 +160,14 @@ class _$SaleImpl implements _Sale {
     return identical(this, other) ||
         (other.runtimeType == runtimeType &&
             other is _$SaleImpl &&
-            (identical(other.total, total) || other.total == total));
+            (identical(other.id, id) || other.id == id) &&
+            (identical(other.total, total) || other.total == total) &&
+            (identical(other.usuario, usuario) || other.usuario == usuario) &&
+            (identical(other.date, date) || other.date == date));
   }
 
   @override
-  int get hashCode => Object.hash(runtimeType, total);
+  int get hashCode => Object.hash(runtimeType, id, total, usuario, date);
 
   /// Create a copy of Sale
   /// with the given fields replaced by the non-null parameter values.
@@ -128,10 +179,21 @@ class _$SaleImpl implements _Sale {
 }
 
 abstract class _Sale implements Sale {
-  const factory _Sale({required final double total}) = _$SaleImpl;
+  const factory _Sale({
+    required final String id,
+    required final double total,
+    required final String usuario,
+    required final DateTime date,
+  }) = _$SaleImpl;
 
   @override
+  String get id;
+  @override
   double get total;
+  @override
+  String get usuario;
+  @override
+  DateTime get date;
 
   /// Create a copy of Sale
   /// with the given fields replaced by the non-null parameter values.

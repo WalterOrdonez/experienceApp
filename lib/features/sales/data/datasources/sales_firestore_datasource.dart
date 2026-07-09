@@ -7,14 +7,17 @@ class SalesFirestoreDatasource {
   SalesFirestoreDatasource({FirebaseFirestore? firestore})
     : _firestore = firestore ?? FirebaseFirestore.instance;
 
-  Stream<List<SaleModel>> getSalesmodelsStream() {
+  Stream<List<SaleModel>> getSalesmodelsStream({required String userId}) {
+    print('Fetching sales stream for userId: $userId');
     return _firestore
         .collection('sales')
+        .where('usuario', isEqualTo: userId)
         .orderBy('date', descending: true)
         .snapshots()
         .map(
-          (snapshot) =>
-              snapshot.docs.map((e) => SaleModel.fromJson(e.data())).toList(),
+          (snapshot) => snapshot.docs
+              .map((e) => SaleModel.fromJson({...e.data(), 'id': e.id}))
+              .toList(),
         );
   }
 }

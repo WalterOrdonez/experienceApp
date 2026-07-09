@@ -44,6 +44,31 @@ class SalesCard extends StatelessWidget {
                   ),
                 ),
                 const SizedBox(height: 6),
+                // Show sale id and date
+                Text(
+                  'ID: ${sale.id}',
+                  style: const TextStyle(
+                    fontSize: 12,
+                    color: AppColors.textSecondary,
+                  ),
+                ),
+                const SizedBox(height: 4),
+                Text(
+                  'Fecha: ${sale.date.toLocal().toIso8601String().split('T').first}',
+                  style: const TextStyle(
+                    fontSize: 13,
+                    color: AppColors.textSecondary,
+                  ),
+                ),
+                const SizedBox(height: 4),
+                Text(
+                  'Hora: ${sale.date.toLocal().toIso8601String().split('T').last.split('.').first}',
+                  style: const TextStyle(
+                    fontSize: 13,
+                    color: AppColors.textSecondary,
+                  ),
+                ),
+                const SizedBox(height: 6),
                 Text(
                   'Monto total',
                   style: const TextStyle(

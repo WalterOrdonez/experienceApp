@@ -21,7 +21,11 @@ SaleModel _$SaleModelFromJson(Map<String, dynamic> json) {
 
 /// @nodoc
 mixin _$SaleModel {
+  String get id => throw _privateConstructorUsedError;
   double get total => throw _privateConstructorUsedError;
+  String get usuario => throw _privateConstructorUsedError;
+  @TimestampConverter()
+  DateTime get date => throw _privateConstructorUsedError;
 
   /// Serializes this SaleModel to a JSON map.
   Map<String, dynamic> toJson() => throw _privateConstructorUsedError;
@@ -38,7 +42,12 @@ abstract class $SaleModelCopyWith<$Res> {
   factory $SaleModelCopyWith(SaleModel value, $Res Function(SaleModel) then) =
       _$SaleModelCopyWithImpl<$Res, SaleModel>;
   @useResult
-  $Res call({double total});
+  $Res call({
+    String id,
+    double total,
+    String usuario,
+    @TimestampConverter() DateTime date,
+  });
 }
 
 /// @nodoc
@@ -55,13 +64,30 @@ class _$SaleModelCopyWithImpl<$Res, $Val extends SaleModel>
   /// with the given fields replaced by the non-null parameter values.
   @pragma('vm:prefer-inline')
   @override
-  $Res call({Object? total = null}) {
+  $Res call({
+    Object? id = null,
+    Object? total = null,
+    Object? usuario = null,
+    Object? date = null,
+  }) {
     return _then(
       _value.copyWith(
+            id: null == id
+                ? _value.id
+                : id // ignore: cast_nullable_to_non_nullable
+                      as String,
             total: null == total
                 ? _value.total
                 : total // ignore: cast_nullable_to_non_nullable
                       as double,
+            usuario: null == usuario
+                ? _value.usuario
+                : usuario // ignore: cast_nullable_to_non_nullable
+                      as String,
+            date: null == date
+                ? _value.date
+                : date // ignore: cast_nullable_to_non_nullable
+                      as DateTime,
           )
           as $Val,
     );
@@ -77,7 +103,12 @@ abstract class _$$SaleModelImplCopyWith<$Res>
   ) = __$$SaleModelImplCopyWithImpl<$Res>;
   @override
   @useResult
-  $Res call({double total});
+  $Res call({
+    String id,
+    double total,
+    String usuario,
+    @TimestampConverter() DateTime date,
+  });
 }
 
 /// @nodoc
@@ -93,32 +124,62 @@ class __$$SaleModelImplCopyWithImpl<$Res>
   /// with the given fields replaced by the non-null parameter values.
   @pragma('vm:prefer-inline')
   @override
-  $Res call({Object? total = null}) {
+  $Res call({
+    Object? id = null,
+    Object? total = null,
+    Object? usuario = null,
+    Object? date = null,
+  }) {
     return _then(
       _$SaleModelImpl(
+        id: null == id
+            ? _value.id
+            : id // ignore: cast_nullable_to_non_nullable
+                  as String,
         total: null == total
             ? _value.total
             : total // ignore: cast_nullable_to_non_nullable
                   as double,
+        usuario: null == usuario
+            ? _value.usuario
+            : usuario // ignore: cast_nullable_to_non_nullable
+                  as String,
+        date: null == date
+            ? _value.date
+            : date // ignore: cast_nullable_to_non_nullable
+                  as DateTime,
       ),
     );
   }
 }
 
 /// @nodoc
-@JsonSerializable()
+
+@JsonSerializable(explicitToJson: true)
 class _$SaleModelImpl implements _SaleModel {
-  const _$SaleModelImpl({required this.total});
+  const _$SaleModelImpl({
+    required this.id,
+    required this.total,
+    required this.usuario,
+    @TimestampConverter() required this.date,
+  });
 
   factory _$SaleModelImpl.fromJson(Map<String, dynamic> json) =>
       _$$SaleModelImplFromJson(json);
 
   @override
+  final String id;
+  @override
   final double total;
+  @override
+  final String usuario;
+  @override
+  @TimestampConverter()
+  final DateTime date;
 
   @override
   String toString() {
-    return 'SaleModel(total: $total)';
+    return 'SaleModel(id: $id, total: $total, usuario: $usuario, date: $date)';
   }
 
   @override
@@ -126,12 +187,15 @@ class _$SaleModelImpl implements _SaleModel {
     return identical(this, other) ||
         (other.runtimeType == runtimeType &&
             other is _$SaleModelImpl &&
-            (identical(other.total, total) || other.total == total));
+            (identical(other.id, id) || other.id == id) &&
+            (identical(other.total, total) || other.total == total) &&
+            (identical(other.usuario, usuario) || other.usuario == usuario) &&
+            (identical(other.date, date) || other.date == date));
   }
 
   @JsonKey(includeFromJson: false, includeToJson: false)
   @override
-  int get hashCode => Object.hash(runtimeType, total);
+  int get hashCode => Object.hash(runtimeType, id, total, usuario, date);
 
   /// Create a copy of SaleModel
   /// with the given fields replaced by the non-null parameter values.
@@ -148,13 +212,25 @@ class _$SaleModelImpl implements _SaleModel {
 }
 
 abstract class _SaleModel implements SaleModel {
-  const factory _SaleModel({required final double total}) = _$SaleModelImpl;
+  const factory _SaleModel({
+    required final String id,
+    required final double total,
+    required final String usuario,
+    @TimestampConverter() required final DateTime date,
+  }) = _$SaleModelImpl;
 
   factory _SaleModel.fromJson(Map<String, dynamic> json) =
       _$SaleModelImpl.fromJson;
 
   @override
+  String get id;
+  @override
   double get total;
+  @override
+  String get usuario;
+  @override
+  @TimestampConverter()
+  DateTime get date;
 
   /// Create a copy of SaleModel
   /// with the given fields replaced by the non-null parameter values.

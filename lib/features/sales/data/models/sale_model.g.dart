@@ -7,7 +7,17 @@ part of 'sale_model.dart';
 // **************************************************************************
 
 _$SaleModelImpl _$$SaleModelImplFromJson(Map<String, dynamic> json) =>
-    _$SaleModelImpl(total: (json['total'] as num).toDouble());
+    _$SaleModelImpl(
+      id: json['id'] as String,
+      total: (json['total'] as num).toDouble(),
+      usuario: json['usuario'] as String,
+      date: const TimestampConverter().fromJson(json['date']),
+    );
 
 Map<String, dynamic> _$$SaleModelImplToJson(_$SaleModelImpl instance) =>
-    <String, dynamic>{'total': instance.total};
+    <String, dynamic>{
+      'id': instance.id,
+      'total': instance.total,
+      'usuario': instance.usuario,
+      'date': const TimestampConverter().toJson(instance.date),
+    };

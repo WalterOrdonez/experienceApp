@@ -8,7 +8,7 @@ class GetSalesStreamUseCase {
   GetSalesStreamUseCase({SalesRepository? repository})
     : repository = repository ?? SalesRepositoryImpl();
 
-  Stream<List<Sale>> call() {
-    return repository.getSalesStream();
+  Stream<List<Sale>> call({required String userId}) {
+    return repository.getSalesStream(userId: userId);
   }
 }

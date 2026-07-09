@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_prototype/core/theme/app_colors.dart';
+import 'package:flutter_prototype/features/login/presentation/state/login_notifier.dart';
 import 'package:flutter_prototype/features/sales/presentation/state/sales_dashboard_notifier.dart';
 import 'package:flutter_prototype/features/sales/presentation/widgets/sales_card.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
@@ -9,7 +10,10 @@ class SalesDashboardView extends ConsumerWidget {
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
-    final state = ref.watch(salesDashboardProvider);
+    final userId = ref.watch(
+      loginProvider.select((state) => state.user?.newId ?? ''),
+    );
+    final state = ref.watch(salesDashboardProvider(userId));
 
     return Scaffold(
       appBar: AppBar(
