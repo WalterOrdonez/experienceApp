@@ -1,3 +1,4 @@
+import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_prototype/core/theme/app_colors.dart';
 import 'package:flutter_prototype/features/profile/presentation/state/profile_state.dart';
@@ -55,12 +56,8 @@ class ProfileImageWidget extends StatelessWidget {
     return state.maybeWhen(
       loaded: (imageUrl) => _buildImage(imageUrl),
       uploading: (imageUrl) => _buildImage(imageUrl),
-      orElse: () => Image.asset(
-        defaultAsset,
-        width: 150,
-        height: 150,
-        fit: BoxFit.cover,
-      ),
+      orElse: () =>
+          Image.asset(defaultAsset, width: 150, height: 150, fit: BoxFit.cover),
     );
   }
 
@@ -72,12 +69,20 @@ class ProfileImageWidget extends StatelessWidget {
         width: 150,
         height: 150,
         fit: BoxFit.cover,
-        errorBuilder: (context, error, stackTrace) => Image.asset(
-          defaultAsset,
-          width: 150,
-          height: 150,
-          fit: BoxFit.cover,
-        ),
+        webHtmlElementStrategy: kIsWeb
+            ? WebHtmlElementStrategy.prefer
+            : WebHtmlElementStrategy.never,
+        errorBuilder: (context, error, stackTrace) {
+          if (kDebugMode) {
+            debugPrint('Error cargando imagen de perfil: $error');
+          }
+          return Image.asset(
+            defaultAsset,
+            width: 150,
+            height: 150,
+            fit: BoxFit.cover,
+          );
+        },
       );
     }
     return Image.asset(

@@ -19,8 +19,17 @@ class ProfileNotifier extends StateNotifier<ProfileState> {
   ProfileNotifier({
     ProfileRepository? repository,
     GetProfileUseCase? getProfileUseCase,
-  }) : _repository = repository ?? ProfileRepositoryImpl(),
-       _getProfileUseCase = getProfileUseCase ?? GetProfileUseCase(),
+  }) : this._(
+         repository: repository ?? ProfileRepositoryImpl(),
+         getProfileUseCase: getProfileUseCase,
+       );
+
+  ProfileNotifier._({
+    required ProfileRepository repository,
+    GetProfileUseCase? getProfileUseCase,
+  }) : _repository = repository,
+       _getProfileUseCase =
+           getProfileUseCase ?? GetProfileUseCase(repository: repository),
        super(const ProfileState.initial()) {
     loadProfileImage();
   }

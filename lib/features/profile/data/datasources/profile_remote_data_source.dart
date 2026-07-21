@@ -52,10 +52,9 @@ class ProfileFirebaseDataSource implements ProfileRemoteDataSource {
       final downloadUrl = await uploadTask.ref.getDownloadURL();
 
       // Guardar la URL en Firestore en el documento del usuario
-      await _firestore.collection('users').doc(userId).set(
-        {'profileImageUrl': downloadUrl},
-        SetOptions(merge: true),
-      );
+      await _firestore.collection('usuarios').doc(userId).set({
+        'profileImageUrl': downloadUrl,
+      }, SetOptions(merge: true));
 
       final durationMs = DateTime.now().difference(startTime).inMilliseconds;
       developer.log(
@@ -91,13 +90,13 @@ class ProfileFirebaseDataSource implements ProfileRemoteDataSource {
     );
 
     try {
-      final userDoc =
-          await _firestore.collection('users').doc(userId).get();
+      final userDoc = await _firestore.collection('usuarios').doc(userId).get();
 
       if (userDoc.exists) {
-        final imageUrl = userDoc.data()?['profileImageUrl'] as String?;
+        final rawImageUrl = userDoc.data()?['profileImageUrl'] as String?;
+        final imageUrl = await _normalizeProfileImageUrl(rawImageUrl);
         developer.log(
-          'Imagen de perfil obtenida: ${imageUrl != null ? "encontrada" : "no encontrada"}',
+          'Imagen de perfil obtenida: ${imageUrl != null ? "encontrada: $imageUrl" : "no encontrada"}',
           name: 'profile.datasource',
         );
         return imageUrl;
@@ -118,5 +117,22 @@ class ProfileFirebaseDataSource implements ProfileRemoteDataSource {
       );
       throw Exception('Error al obtener la imagen de perfil: $e');
     }
+  }
+
+  /// Normaliza la URL almacenada en Firestore para que sea renderizable por Image.network.
+  Future<String?> _normalizeProfileImageUrl(String? rawUrl) async {
+    if (rawUrl == null) return null;
+
+    final sanitizedUrl = rawUrl.trim().replaceAll('"', '');
+    if (sanitizedUrl.isEmpty) return null;
+
+    if (sanitizedUrl.startsWith('gs://')) {
+      final resolvedUrl = await _storage
+          .refFromURL(sanitizedUrl)
+          .getDownloadURL();
+      return resolvedUrl;
+    }
+
+    return sanitizedUrl;
   }
 }
