@@ -10,6 +10,7 @@ import 'package:flutter_prototype/features/login/presentation/views/login_view.d
 import 'package:flutter_prototype/features/onboarding/presentation/views/onboarding_next_view.dart';
 import 'package:flutter_prototype/features/onboarding/presentation/views/onboarding_view.dart';
 import 'package:flutter_prototype/features/sales/presentation/views/sales_dashboard_view.dart';
+import 'package:flutter_prototype/features/profile/presentation/views/profile_view.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:go_router/go_router.dart';
 
@@ -98,6 +99,10 @@ final routerProvider = Provider<GoRouter>((ref) {
         path: AppRoutes.salesDashboard,
         builder: (context, state) => const SalesDashboardView(),
       ),
+      GoRoute(
+        path: AppRoutes.profile,
+        builder: (context, state) => const ProfileView(),
+      ),
     ],
   );
 });
@@ -114,4 +119,5 @@ abstract class AppRoutes {
   static const addPaymentCard = '/add-payment-card';
   static const checkout = '/checkout';
   static const salesDashboard = '/sales-dashboard';
+  static const profile = '/profile';
 }

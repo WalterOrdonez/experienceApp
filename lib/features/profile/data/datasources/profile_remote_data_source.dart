@@ -1,5 +1,5 @@
 import 'dart:developer' as developer;
-import 'dart:io';
+import 'dart:typed_data';
 
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
@@ -39,8 +39,14 @@ class ProfileFirebaseDataSource implements ProfileRemoteDataSource {
       // Referencia en Storage con ruta profile_images/{userId}.jpg
       final storageRef = _storage.ref().child('profile_images/$userId.jpg');
 
-      // Subir archivo a Firebase Storage
-      final uploadTask = await storageRef.putFile(File(image.path));
+      // Leer bytes de la imagen (compatible con web y mobile)
+      final Uint8List imageBytes = await image.readAsBytes();
+
+      // Subir bytes a Firebase Storage con metadata del tipo de archivo
+      final metadata = SettableMetadata(
+        contentType: 'image/${image.name.split('.').last}',
+      );
+      final uploadTask = await storageRef.putData(imageBytes, metadata);
 
       // Obtener URL de descarga
       final downloadUrl = await uploadTask.ref.getDownloadURL();
