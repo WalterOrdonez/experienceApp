@@ -1,3 +1,4 @@
+import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_prototype/core/theme/app_colors.dart';
 
@@ -8,15 +9,36 @@ class ProductImagePreview extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    final image = imagePath.startsWith('http')
+    final normalizedImagePath = imagePath.trim();
+    final imageUri = Uri.tryParse(normalizedImagePath);
+    final isNetworkImage =
+        imageUri != null &&
+        (imageUri.scheme == 'http' || imageUri.scheme == 'https');
+
+    if (normalizedImagePath.isEmpty) {
+      return ClipRRect(
+        borderRadius: BorderRadius.circular(18),
+        child: Container(
+          width: 88,
+          height: 88,
+          color: AppColors.primaryLight,
+          child: const _ImageFallback(),
+        ),
+      );
+    }
+
+    final image = isNetworkImage
         ? Image.network(
-            imagePath,
+            normalizedImagePath,
             fit: BoxFit.cover,
+            webHtmlElementStrategy: kIsWeb
+                ? WebHtmlElementStrategy.prefer
+                : WebHtmlElementStrategy.never,
             errorBuilder: (context, error, stackTrace) =>
                 const _ImageFallback(),
           )
         : Image.asset(
-            imagePath,
+            normalizedImagePath,
             fit: BoxFit.cover,
             errorBuilder: (context, error, stackTrace) =>
                 const _ImageFallback(),

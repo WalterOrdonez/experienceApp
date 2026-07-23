@@ -39,7 +39,7 @@ class ProductImagePickerField extends StatelessWidget {
               if (imageUrl != null)
                 Image.network(
                   imageUrl!,
-                  fit: BoxFit.cover,
+                  fit: BoxFit.fitHeight,
                   webHtmlElementStrategy: kIsWeb
                       ? WebHtmlElementStrategy.prefer
                       : WebHtmlElementStrategy.never,
