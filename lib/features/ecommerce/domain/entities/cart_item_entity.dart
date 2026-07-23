@@ -11,7 +11,7 @@ class CartItemEntity with _$CartItemEntity {
     required ProductEntity product,
     required int quantity,
     required String selectedSize,
-    required int selectedColor,
+    required String selectedColor,
   }) = _CartItemEntity;
 
   /// Precio total del item (precio unitario * cantidad)

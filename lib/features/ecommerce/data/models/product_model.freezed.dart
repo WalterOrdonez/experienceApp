@@ -26,7 +26,7 @@ mixin _$ProductModel {
   String get imagePath => throw _privateConstructorUsedError;
   double get price => throw _privateConstructorUsedError;
   List<String> get size => throw _privateConstructorUsedError;
-  List<int> get color => throw _privateConstructorUsedError;
+  List<String> get color => throw _privateConstructorUsedError;
 
   /// Serializes this ProductModel to a JSON map.
   Map<String, dynamic> toJson() => throw _privateConstructorUsedError;
@@ -51,7 +51,7 @@ abstract class $ProductModelCopyWith<$Res> {
     String imagePath,
     double price,
     List<String> size,
-    List<int> color,
+    List<String> color,
   });
 }
 
@@ -102,7 +102,7 @@ class _$ProductModelCopyWithImpl<$Res, $Val extends ProductModel>
             color: null == color
                 ? _value.color
                 : color // ignore: cast_nullable_to_non_nullable
-                      as List<int>,
+                      as List<String>,
           )
           as $Val,
     );
@@ -124,7 +124,7 @@ abstract class _$$ProductModelImplCopyWith<$Res>
     String imagePath,
     double price,
     List<String> size,
-    List<int> color,
+    List<String> color,
   });
 }
 
@@ -174,7 +174,7 @@ class __$$ProductModelImplCopyWithImpl<$Res>
         color: null == color
             ? _value._color
             : color // ignore: cast_nullable_to_non_nullable
-                  as List<int>,
+                  as List<String>,
       ),
     );
   }
@@ -189,7 +189,7 @@ class _$ProductModelImpl extends _ProductModel {
     required this.imagePath,
     required this.price,
     required final List<String> size,
-    required final List<int> color,
+    required final List<String> color,
   }) : _size = size,
        _color = color,
        super._();
@@ -213,9 +213,9 @@ class _$ProductModelImpl extends _ProductModel {
     return EqualUnmodifiableListView(_size);
   }
 
-  final List<int> _color;
+  final List<String> _color;
   @override
-  List<int> get color {
+  List<String> get color {
     if (_color is EqualUnmodifiableListView) return _color;
     // ignore: implicit_dynamic_type
     return EqualUnmodifiableListView(_color);
@@ -273,7 +273,7 @@ abstract class _ProductModel extends ProductModel {
     required final String imagePath,
     required final double price,
     required final List<String> size,
-    required final List<int> color,
+    required final List<String> color,
   }) = _$ProductModelImpl;
   const _ProductModel._() : super._();
 
@@ -291,7 +291,7 @@ abstract class _ProductModel extends ProductModel {
   @override
   List<String> get size;
   @override
-  List<int> get color;
+  List<String> get color;
 
   /// Create a copy of ProductModel
   /// with the given fields replaced by the non-null parameter values.

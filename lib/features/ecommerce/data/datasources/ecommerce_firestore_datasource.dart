@@ -25,12 +25,35 @@ class EcommerceFirestoreDatasource extends EcommerceDatasource {
             .map<String>((item) => item.toString())
             .toList(),
         color: ((data['color'] as List<dynamic>?) ?? const [])
-            .map<int>(
-              (item) =>
-                  item is String ? int.parse(item) : (item as num).toInt(),
-            )
+            .map(_normalizeStoredColor)
+            .whereType<String>()
             .toList(),
       );
     }).toList();
+  }
+
+  String? _normalizeStoredColor(dynamic raw) {
+    if (raw is String) {
+      final value = raw.trim().toUpperCase();
+      if (value.isEmpty) {
+        return null;
+      }
+
+      final cleaned = value.replaceAll('#', '').replaceAll('0X', '');
+      if (cleaned.length == 6) {
+        return '#FF$cleaned';
+      }
+      if (cleaned.length == 8) {
+        return '#$cleaned';
+      }
+      return null;
+    }
+
+    if (raw is num) {
+      final hex = raw.toInt().toRadixString(16).toUpperCase().padLeft(8, '0');
+      return '#$hex';
+    }
+
+    return null;
   }
 }

@@ -19,12 +19,12 @@ _$CartItemModelImpl _$$CartItemModelImplFromJson(Map<String, dynamic> json) =>
           const [],
       productColors:
           (json['productColors'] as List<dynamic>?)
-              ?.map((e) => (e as num).toInt())
+              ?.map((e) => e as String)
               .toList() ??
           const [],
       quantity: (json['quantity'] as num?)?.toInt() ?? 0,
       selectedSize: json['selectedSize'] as String? ?? '',
-      selectedColor: (json['selectedColor'] as num?)?.toInt() ?? 0,
+      selectedColor: json['selectedColor'] as String? ?? '',
     );
 
 Map<String, dynamic> _$$CartItemModelImplToJson(_$CartItemModelImpl instance) =>

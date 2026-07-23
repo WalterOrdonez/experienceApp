@@ -2,6 +2,7 @@ import 'package:flutter_prototype/features/administrator/data/datasources/produc
 import 'package:flutter_prototype/features/administrator/domain/repositories/products_repository.dart';
 import 'package:flutter_prototype/features/ecommerce/data/models/product_model.dart';
 import 'package:flutter_prototype/features/ecommerce/domain/entities/product_entity.dart';
+import 'package:image_picker/image_picker.dart';
 
 class ProductsRepositoryImpl implements ProductsRepository {
   final ProductsDatasource datasource;
@@ -23,6 +24,14 @@ class ProductsRepositoryImpl implements ProductsRepository {
   @override
   Future<void> deleteProduct(String id) {
     return datasource.deleteProduct(id);
+  }
+
+  @override
+  String generateProductId() => datasource.generateProductId();
+
+  @override
+  Future<String> uploadProductImage(XFile image, String productId) {
+    return datasource.uploadProductImage(image, productId);
   }
 
   ProductModel _mapEntityToModel(ProductEntity product) {

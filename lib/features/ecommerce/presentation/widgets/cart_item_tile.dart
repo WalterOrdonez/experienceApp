@@ -97,20 +97,20 @@ class CartItemTile extends StatelessWidget {
     );
   }
 
-  /// Convierte un color int a nombre legible
-  String _colorName(int colorValue) {
-    switch (colorValue) {
-      case 0xFF1A1A1A:
+  /// Convierte un color hex a nombre legible
+  String _colorName(String colorValue) {
+    switch (colorValue.toUpperCase()) {
+      case '#FF1A1A1A':
         return 'Black';
-      case 0xFF007AFF:
+      case '#FF007AFF':
         return 'Blue';
-      case 0xFFD4AF37:
+      case '#FFD4AF37':
         return 'Gold';
-      case 0xFF4CAF50:
+      case '#FF4CAF50':
         return 'Green';
-      case 0xFF6B6B6B:
+      case '#FF6B6B6B':
         return 'Grey';
-      case 0xFFB0B0B0:
+      case '#FFB0B0B0':
         return 'Light Grey';
       default:
         return 'Color';

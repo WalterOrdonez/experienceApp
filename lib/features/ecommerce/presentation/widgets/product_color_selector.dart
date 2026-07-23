@@ -3,7 +3,7 @@ import '../../../../core/theme/app_colors.dart';
 
 /// Selector de colores con círculos y check de selección
 class ProductColorSelector extends StatelessWidget {
-  final List<int> colors;
+  final List<String> colors;
   final int selectedIndex;
   final ValueChanged<int> onColorSelected;
 
@@ -31,7 +31,7 @@ class ProductColorSelector extends StatelessWidget {
         Row(
           children: List.generate(colors.length, (index) {
             final isSelected = index == selectedIndex;
-            final color = Color(colors[index]);
+            final color = _hexToColor(colors[index]);
             return Padding(
               padding: const EdgeInsets.only(right: 12),
               child: GestureDetector(
@@ -62,5 +62,16 @@ class ProductColorSelector extends StatelessWidget {
         ),
       ],
     );
+  }
+
+  Color _hexToColor(String hex) {
+    final cleaned = hex.trim().toUpperCase().replaceAll('#', '');
+    if (cleaned.length == 6) {
+      return Color(int.parse('FF$cleaned', radix: 16));
+    }
+    if (cleaned.length == 8) {
+      return Color(int.parse(cleaned, radix: 16));
+    }
+    return const Color(0xFF000000);
   }
 }

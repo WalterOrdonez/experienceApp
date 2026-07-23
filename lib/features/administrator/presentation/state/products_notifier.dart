@@ -2,11 +2,14 @@ import 'dart:async';
 
 import 'package:flutter_prototype/features/administrator/data/datasources/products_firestore_datasource.dart';
 import 'package:flutter_prototype/features/administrator/data/repositories/products_repository_impl.dart';
+import 'package:flutter_prototype/features/administrator/domain/repositories/products_repository.dart';
 import 'package:flutter_prototype/features/administrator/domain/usecases/delete_product.dart';
 import 'package:flutter_prototype/features/administrator/domain/usecases/save_product.dart';
+import 'package:flutter_prototype/features/administrator/domain/usecases/upload_product_image.dart';
 import 'package:flutter_prototype/features/administrator/domain/usecases/watch_products.dart';
 import 'package:flutter_prototype/features/ecommerce/domain/entities/product_entity.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
+import 'package:image_picker/image_picker.dart';
 
 import 'products_state.dart';
 
@@ -14,10 +17,17 @@ class ProductsNotifier extends StateNotifier<ProductsState> {
   final WatchProducts _watchProducts;
   final SaveProduct _saveProduct;
   final DeleteProduct _deleteProduct;
+  final UploadProductImage _uploadProductImage;
+  final ProductsRepository _repository;
   StreamSubscription<List<ProductEntity>>? _productsSubscription;
 
-  ProductsNotifier(this._watchProducts, this._saveProduct, this._deleteProduct)
-    : super(const ProductsState()) {
+  ProductsNotifier(
+    this._watchProducts,
+    this._saveProduct,
+    this._deleteProduct,
+    this._uploadProductImage,
+    this._repository,
+  ) : super(const ProductsState()) {
     _listenToProducts();
   }
 
@@ -47,7 +57,7 @@ class ProductsNotifier extends StateNotifier<ProductsState> {
     required String imagePath,
     required double price,
     required List<String> size,
-    required List<int> color,
+    required List<String> color,
   }) async {
     state = state.merge(isSaving: true, clearErrorMessage: true);
 
@@ -88,6 +98,18 @@ class ProductsNotifier extends StateNotifier<ProductsState> {
     }
   }
 
+  /// Genera un ID único para un nuevo producto sin escribir en Firestore.
+  String generateProductId() => _repository.generateProductId();
+
+  /// Sube la imagen a Firebase Storage y retorna la URL de descarga, o null si falla.
+  Future<String?> uploadProductImage(XFile image, String productId) async {
+    try {
+      return await _uploadProductImage(image, productId);
+    } catch (_) {
+      return null;
+    }
+  }
+
   @override
   void dispose() {
     _productsSubscription?.cancel();
@@ -104,6 +126,8 @@ final productsProvider = StateNotifierProvider<ProductsNotifier, ProductsState>(
       WatchProducts(repository),
       SaveProduct(repository),
       DeleteProduct(repository),
+      UploadProductImage(repository),
+      repository,
     );
   },
 );

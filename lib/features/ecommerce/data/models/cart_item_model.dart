@@ -16,10 +16,10 @@ class CartItemModel with _$CartItemModel {
     @Default('') String productImagePath,
     @Default(0.0) double productPrice,
     @Default([]) List<String> productSizes,
-    @Default([]) List<int> productColors,
+    @Default([]) List<String> productColors,
     @Default(0) int quantity,
     @Default('') String selectedSize,
-    @Default(0) int selectedColor,
+    @Default('') String selectedColor,
   }) = _CartItemModel;
 
   /// Convierte desde JSON (Map)

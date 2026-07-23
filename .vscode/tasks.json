@@ -17,6 +17,31 @@
 				"$dart-flutter"
 			],
 			"group": "build"
+		},
+		{
+			"label": "Flutter Pub Get",
+			"type": "shell",
+			"command": "flutter",
+			"args": [
+				"pub",
+				"get"
+			],
+			"isBackground": false,
+			"group": "build"
+		},
+		{
+			"label": "Build Runner Generate",
+			"type": "shell",
+			"command": "flutter",
+			"args": [
+				"pub",
+				"run",
+				"build_runner",
+				"build",
+				"--delete-conflicting-outputs"
+			],
+			"isBackground": false,
+			"group": "build"
 		}
 	]
 }

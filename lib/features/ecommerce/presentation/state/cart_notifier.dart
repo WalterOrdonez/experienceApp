@@ -88,7 +88,7 @@ class CartNotifier extends StateNotifier<CartState> {
         : '';
     final selectedColor = product.color.isNotEmpty
         ? product.color[selectedColorIndex]
-        : 0;
+        : '#FF000000';
 
     final item = CartItemEntity(
       product: product,

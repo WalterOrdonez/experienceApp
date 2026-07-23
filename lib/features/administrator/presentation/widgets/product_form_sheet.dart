@@ -1,9 +1,15 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_prototype/core/theme/app_colors.dart';
 import 'package:flutter_prototype/core/theme/app_text_styles.dart';
+import 'package:flutter_prototype/features/administrator/presentation/constants/product_form_constants.dart';
 import 'package:flutter_prototype/features/administrator/presentation/state/products_notifier.dart';
+import 'package:flutter_prototype/features/administrator/presentation/widgets/product_colors_picker_field.dart';
+import 'package:flutter_prototype/features/administrator/presentation/widgets/product_image_picker_field.dart';
+import 'package:flutter_prototype/features/administrator/presentation/widgets/product_sizes_dropdown_field.dart';
+import 'package:flutter_prototype/features/administrator/presentation/widgets/product_submit_button.dart';
 import 'package:flutter_prototype/features/ecommerce/domain/entities/product_entity.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
+import 'package:image_picker/image_picker.dart';
 
 class ProductFormSheet extends ConsumerStatefulWidget {
   final ProductEntity? product;
@@ -18,10 +24,13 @@ class _ProductFormSheetState extends ConsumerState<ProductFormSheet> {
   final _formKey = GlobalKey<FormState>();
 
   late final TextEditingController _nameController;
-  late final TextEditingController _imagePathController;
   late final TextEditingController _priceController;
-  late final TextEditingController _sizesController;
-  late final TextEditingController _colorsController;
+
+  late String _productId;
+  late final List<String> _selectedSizes;
+  late final List<String> _selectedColors;
+  String? _uploadedImageUrl;
+  bool _isUploadingImage = false;
 
   @override
   void initState() {
@@ -29,27 +38,32 @@ class _ProductFormSheetState extends ConsumerState<ProductFormSheet> {
 
     final product = widget.product;
     _nameController = TextEditingController(text: product?.name ?? '');
-    _imagePathController = TextEditingController(
-      text: product?.imagePath ?? '',
-    );
     _priceController = TextEditingController(
       text: product != null ? product.price.toStringAsFixed(2) : '',
     );
-    _sizesController = TextEditingController(
-      text: product?.size.join(', ') ?? '',
-    );
-    _colorsController = TextEditingController(
-      text: product?.color.map(_formatColorValue).join(', ') ?? '',
-    );
+    _selectedSizes =
+        product?.size
+            .where((size) => productAvailableSizes.contains(size))
+            .toList() ??
+        <String>[];
+    _selectedColors =
+        product?.color.map(_normalizeHexColor).whereType<String>().toList() ??
+        <String>[];
+
+    if (product != null) {
+      _productId = product.id;
+      _uploadedImageUrl = product.imagePath.isNotEmpty
+          ? product.imagePath
+          : null;
+    } else {
+      _productId = ref.read(productsProvider.notifier).generateProductId();
+    }
   }
 
   @override
   void dispose() {
     _nameController.dispose();
-    _imagePathController.dispose();
     _priceController.dispose();
-    _sizesController.dispose();
-    _colorsController.dispose();
     super.dispose();
   }
 
@@ -103,18 +117,10 @@ class _ProductFormSheetState extends ConsumerState<ProductFormSheet> {
                   },
                 ),
                 const SizedBox(height: 16),
-                TextFormField(
-                  controller: _imagePathController,
-                  decoration: const InputDecoration(
-                    labelText: 'Ruta de imagen o URL',
-                    prefixIcon: Icon(Icons.image_outlined),
-                  ),
-                  validator: (value) {
-                    if (value == null || value.trim().isEmpty) {
-                      return 'Ingresa una ruta de imagen o URL.';
-                    }
-                    return null;
-                  },
+                ProductImagePickerField(
+                  imageUrl: _uploadedImageUrl,
+                  isUploading: _isUploadingImage,
+                  onTap: _pickAndUploadImage,
                 ),
                 const SizedBox(height: 16),
                 TextFormField(
@@ -135,63 +141,60 @@ class _ProductFormSheetState extends ConsumerState<ProductFormSheet> {
                   },
                 ),
                 const SizedBox(height: 16),
-                TextFormField(
-                  controller: _sizesController,
-                  decoration: const InputDecoration(
-                    labelText: 'Tallas separadas por coma',
-                    prefixIcon: Icon(Icons.straighten_rounded),
-                  ),
+                FormField<List<String>>(
+                  initialValue: List<String>.from(_selectedSizes),
                   validator: (value) {
-                    if (_parseSizes(value).isEmpty) {
-                      return 'Ingresa al menos una talla.';
+                    if ((value ?? <String>[]).isEmpty) {
+                      return 'Selecciona al menos una talla.';
                     }
                     return null;
+                  },
+                  builder: (field) {
+                    return ProductSizesDropdownField(
+                      selectedSizes: _selectedSizes,
+                      availableSizes: productAvailableSizes,
+                      errorText: field.errorText,
+                      onChanged: (sizes) {
+                        setState(() {
+                          _selectedSizes
+                            ..clear()
+                            ..addAll(sizes);
+                        });
+                        field.didChange(List<String>.from(_selectedSizes));
+                      },
+                    );
                   },
                 ),
                 const SizedBox(height: 16),
-                TextFormField(
-                  controller: _colorsController,
-                  decoration: const InputDecoration(
-                    labelText: 'Colores hex o enteros separados por coma',
-                    prefixIcon: Icon(Icons.palette_outlined),
-                  ),
+                FormField<List<String>>(
+                  initialValue: List<String>.from(_selectedColors),
                   validator: (value) {
-                    if (_tryParseColors(value) == null) {
-                      return 'Usa valores como 0xFF000000, FF007AFF o 4278190080.';
+                    if ((value ?? <String>[]).isEmpty) {
+                      return 'Selecciona al menos un color.';
                     }
                     return null;
                   },
+                  builder: (field) {
+                    return ProductColorsPickerField(
+                      selectedColors: _selectedColors,
+                      maxColors: 4,
+                      errorText: field.errorText,
+                      onChanged: (colors) {
+                        setState(() {
+                          _selectedColors
+                            ..clear()
+                            ..addAll(colors);
+                        });
+                        field.didChange(List<String>.from(_selectedColors));
+                      },
+                    );
+                  },
                 ),
                 const SizedBox(height: 24),
-                SizedBox(
-                  width: double.infinity,
-                  child: ElevatedButton(
-                    onPressed: state.isSaving ? null : _submit,
-                    style: ElevatedButton.styleFrom(
-                      backgroundColor: AppColors.primary,
-                      disabledBackgroundColor: AppColors.primaryLight,
-                      foregroundColor: AppColors.white,
-                      padding: const EdgeInsets.symmetric(vertical: 16),
-                      shape: RoundedRectangleBorder(
-                        borderRadius: BorderRadius.circular(14),
-                      ),
-                    ),
-                    child: state.isSaving
-                        ? const SizedBox(
-                            width: 20,
-                            height: 20,
-                            child: CircularProgressIndicator(
-                              strokeWidth: 2,
-                              valueColor: AlwaysStoppedAnimation<Color>(
-                                AppColors.white,
-                              ),
-                            ),
-                          )
-                        : Text(
-                            isEditing ? 'Guardar cambios' : 'Crear producto',
-                            style: AppTextStyles.button,
-                          ),
-                  ),
+                ProductSubmitButton(
+                  isSaving: state.isSaving,
+                  isEditing: isEditing,
+                  onPressed: _submit,
                 ),
               ],
             ),
@@ -206,20 +209,24 @@ class _ProductFormSheetState extends ConsumerState<ProductFormSheet> {
       return;
     }
 
-    final colors = _tryParseColors(_colorsController.text);
-    if (colors == null) {
+    if (_uploadedImageUrl == null) {
+      ScaffoldMessenger.of(context).showSnackBar(
+        const SnackBar(
+          content: Text('Selecciona una imagen para el producto.'),
+        ),
+      );
       return;
     }
 
     final saved = await ref
         .read(productsProvider.notifier)
         .saveProduct(
-          id: widget.product?.id,
+          id: _productId,
           name: _nameController.text.trim(),
-          imagePath: _imagePathController.text.trim(),
+          imagePath: _uploadedImageUrl!,
           price: double.parse(_priceController.text.trim()),
-          size: _parseSizes(_sizesController.text),
-          color: colors,
+          size: _selectedSizes,
+          color: _selectedColors,
         );
 
     if (saved && mounted) {
@@ -227,45 +234,48 @@ class _ProductFormSheetState extends ConsumerState<ProductFormSheet> {
     }
   }
 
-  List<String> _parseSizes(String? value) {
-    return (value ?? '')
-        .split(',')
-        .map((item) => item.trim())
-        .where((item) => item.isNotEmpty)
-        .toList();
+  Future<void> _pickAndUploadImage() async {
+    final picker = ImagePicker();
+    final image = await picker.pickImage(
+      source: ImageSource.gallery,
+      maxWidth: 1024,
+      maxHeight: 1024,
+      imageQuality: 85,
+    );
+
+    if (image == null) return;
+
+    setState(() => _isUploadingImage = true);
+
+    final url = await ref
+        .read(productsProvider.notifier)
+        .uploadProductImage(image, _productId);
+
+    if (!mounted) return;
+
+    if (url != null) {
+      setState(() {
+        _uploadedImageUrl = url;
+        _isUploadingImage = false;
+      });
+    } else {
+      setState(() => _isUploadingImage = false);
+      ScaffoldMessenger.of(context).showSnackBar(
+        const SnackBar(
+          content: Text('Error al subir la imagen. Intenta de nuevo.'),
+        ),
+      );
+    }
   }
 
-  List<int>? _tryParseColors(String? value) {
-    final rawValues = (value ?? '')
-        .split(',')
-        .map((item) => item.trim())
-        .where((item) => item.isNotEmpty)
-        .toList();
-
-    if (rawValues.isEmpty) {
-      return null;
+  String? _normalizeHexColor(String raw) {
+    final cleaned = raw.trim().toUpperCase().replaceAll('#', '');
+    if (cleaned.length == 6) {
+      return '#FF$cleaned';
     }
-
-    final parsed = <int>[];
-
-    for (final rawValue in rawValues) {
-      final normalized = rawValue.toUpperCase().replaceAll('#', '');
-      final parsedValue =
-          int.tryParse(normalized) ??
-          int.tryParse(normalized.replaceFirst('0X', ''), radix: 16) ??
-          int.tryParse(normalized, radix: 16);
-
-      if (parsedValue == null) {
-        return null;
-      }
-
-      parsed.add(parsedValue);
+    if (cleaned.length == 8) {
+      return '#$cleaned';
     }
-
-    return parsed;
-  }
-
-  String _formatColorValue(int value) {
-    return '0x${value.toRadixString(16).toUpperCase()}';
+    return null;
   }
 }

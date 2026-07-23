@@ -20,7 +20,7 @@ mixin _$CartItemEntity {
   ProductEntity get product => throw _privateConstructorUsedError;
   int get quantity => throw _privateConstructorUsedError;
   String get selectedSize => throw _privateConstructorUsedError;
-  int get selectedColor => throw _privateConstructorUsedError;
+  String get selectedColor => throw _privateConstructorUsedError;
 
   /// Create a copy of CartItemEntity
   /// with the given fields replaced by the non-null parameter values.
@@ -40,7 +40,7 @@ abstract class $CartItemEntityCopyWith<$Res> {
     ProductEntity product,
     int quantity,
     String selectedSize,
-    int selectedColor,
+    String selectedColor,
   });
 
   $ProductEntityCopyWith<$Res> get product;
@@ -83,7 +83,7 @@ class _$CartItemEntityCopyWithImpl<$Res, $Val extends CartItemEntity>
             selectedColor: null == selectedColor
                 ? _value.selectedColor
                 : selectedColor // ignore: cast_nullable_to_non_nullable
-                      as int,
+                      as String,
           )
           as $Val,
     );
@@ -113,7 +113,7 @@ abstract class _$$CartItemEntityImplCopyWith<$Res>
     ProductEntity product,
     int quantity,
     String selectedSize,
-    int selectedColor,
+    String selectedColor,
   });
 
   @override
@@ -156,7 +156,7 @@ class __$$CartItemEntityImplCopyWithImpl<$Res>
         selectedColor: null == selectedColor
             ? _value.selectedColor
             : selectedColor // ignore: cast_nullable_to_non_nullable
-                  as int,
+                  as String,
       ),
     );
   }
@@ -179,7 +179,7 @@ class _$CartItemEntityImpl extends _CartItemEntity {
   @override
   final String selectedSize;
   @override
-  final int selectedColor;
+  final String selectedColor;
 
   @override
   String toString() {
@@ -221,7 +221,7 @@ abstract class _CartItemEntity extends CartItemEntity {
     required final ProductEntity product,
     required final int quantity,
     required final String selectedSize,
-    required final int selectedColor,
+    required final String selectedColor,
   }) = _$CartItemEntityImpl;
   const _CartItemEntity._() : super._();
 
@@ -232,7 +232,7 @@ abstract class _CartItemEntity extends CartItemEntity {
   @override
   String get selectedSize;
   @override
-  int get selectedColor;
+  String get selectedColor;
 
   /// Create a copy of CartItemEntity
   /// with the given fields replaced by the non-null parameter values.

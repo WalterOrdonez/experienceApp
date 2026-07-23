@@ -22,7 +22,7 @@ mixin _$ProductEntity {
   String get imagePath => throw _privateConstructorUsedError;
   double get price => throw _privateConstructorUsedError;
   List<String> get size => throw _privateConstructorUsedError;
-  List<int> get color => throw _privateConstructorUsedError;
+  List<String> get color => throw _privateConstructorUsedError;
 
   /// Create a copy of ProductEntity
   /// with the given fields replaced by the non-null parameter values.
@@ -44,7 +44,7 @@ abstract class $ProductEntityCopyWith<$Res> {
     String imagePath,
     double price,
     List<String> size,
-    List<int> color,
+    List<String> color,
   });
 }
 
@@ -95,7 +95,7 @@ class _$ProductEntityCopyWithImpl<$Res, $Val extends ProductEntity>
             color: null == color
                 ? _value.color
                 : color // ignore: cast_nullable_to_non_nullable
-                      as List<int>,
+                      as List<String>,
           )
           as $Val,
     );
@@ -117,7 +117,7 @@ abstract class _$$ProductEntityImplCopyWith<$Res>
     String imagePath,
     double price,
     List<String> size,
-    List<int> color,
+    List<String> color,
   });
 }
 
@@ -167,7 +167,7 @@ class __$$ProductEntityImplCopyWithImpl<$Res>
         color: null == color
             ? _value._color
             : color // ignore: cast_nullable_to_non_nullable
-                  as List<int>,
+                  as List<String>,
       ),
     );
   }
@@ -182,7 +182,7 @@ class _$ProductEntityImpl extends _ProductEntity {
     required this.imagePath,
     required this.price,
     required final List<String> size,
-    required final List<int> color,
+    required final List<String> color,
   }) : _size = size,
        _color = color,
        super._();
@@ -203,9 +203,9 @@ class _$ProductEntityImpl extends _ProductEntity {
     return EqualUnmodifiableListView(_size);
   }
 
-  final List<int> _color;
+  final List<String> _color;
   @override
-  List<int> get color {
+  List<String> get color {
     if (_color is EqualUnmodifiableListView) return _color;
     // ignore: implicit_dynamic_type
     return EqualUnmodifiableListView(_color);
@@ -257,7 +257,7 @@ abstract class _ProductEntity extends ProductEntity {
     required final String imagePath,
     required final double price,
     required final List<String> size,
-    required final List<int> color,
+    required final List<String> color,
   }) = _$ProductEntityImpl;
   const _ProductEntity._() : super._();
 
@@ -272,7 +272,7 @@ abstract class _ProductEntity extends ProductEntity {
   @override
   List<String> get size;
   @override
-  List<int> get color;
+  List<String> get color;
 
   /// Create a copy of ProductEntity
   /// with the given fields replaced by the non-null parameter values.

@@ -24,7 +24,7 @@ mixin _$ProductDetailState {
   String get description => throw _privateConstructorUsedError;
   List<String> get availableSizes => throw _privateConstructorUsedError;
   int get selectedSize => throw _privateConstructorUsedError;
-  List<int> get availableColors => throw _privateConstructorUsedError;
+  List<String> get availableColors => throw _privateConstructorUsedError;
   int get selectedColorIndex => throw _privateConstructorUsedError;
   bool get isFavorite => throw _privateConstructorUsedError;
 
@@ -50,7 +50,7 @@ abstract class $ProductDetailStateCopyWith<$Res> {
     String description,
     List<String> availableSizes,
     int selectedSize,
-    List<int> availableColors,
+    List<String> availableColors,
     int selectedColorIndex,
     bool isFavorite,
   });
@@ -115,7 +115,7 @@ class _$ProductDetailStateCopyWithImpl<$Res, $Val extends ProductDetailState>
             availableColors: null == availableColors
                 ? _value.availableColors
                 : availableColors // ignore: cast_nullable_to_non_nullable
-                      as List<int>,
+                      as List<String>,
             selectedColorIndex: null == selectedColorIndex
                 ? _value.selectedColorIndex
                 : selectedColorIndex // ignore: cast_nullable_to_non_nullable
@@ -147,7 +147,7 @@ abstract class _$$ProductDetailStateImplCopyWith<$Res>
     String description,
     List<String> availableSizes,
     int selectedSize,
-    List<int> availableColors,
+    List<String> availableColors,
     int selectedColorIndex,
     bool isFavorite,
   });
@@ -211,7 +211,7 @@ class __$$ProductDetailStateImplCopyWithImpl<$Res>
         availableColors: null == availableColors
             ? _value._availableColors
             : availableColors // ignore: cast_nullable_to_non_nullable
-                  as List<int>,
+                  as List<String>,
         selectedColorIndex: null == selectedColorIndex
             ? _value.selectedColorIndex
             : selectedColorIndex // ignore: cast_nullable_to_non_nullable
@@ -236,7 +236,7 @@ class _$ProductDetailStateImpl implements _ProductDetailState {
     this.description = '',
     final List<String> availableSizes = const [],
     this.selectedSize = 0,
-    final List<int> availableColors = const [],
+    final List<String> availableColors = const [],
     this.selectedColorIndex = 0,
     this.isFavorite = false,
   }) : _productImages = productImages,
@@ -276,10 +276,10 @@ class _$ProductDetailStateImpl implements _ProductDetailState {
   @override
   @JsonKey()
   final int selectedSize;
-  final List<int> _availableColors;
+  final List<String> _availableColors;
   @override
   @JsonKey()
-  List<int> get availableColors {
+  List<String> get availableColors {
     if (_availableColors is EqualUnmodifiableListView) return _availableColors;
     // ignore: implicit_dynamic_type
     return EqualUnmodifiableListView(_availableColors);
@@ -364,7 +364,7 @@ abstract class _ProductDetailState implements ProductDetailState {
     final String description,
     final List<String> availableSizes,
     final int selectedSize,
-    final List<int> availableColors,
+    final List<String> availableColors,
     final int selectedColorIndex,
     final bool isFavorite,
   }) = _$ProductDetailStateImpl;
@@ -384,7 +384,7 @@ abstract class _ProductDetailState implements ProductDetailState {
   @override
   int get selectedSize;
   @override
-  List<int> get availableColors;
+  List<String> get availableColors;
   @override
   int get selectedColorIndex;
   @override

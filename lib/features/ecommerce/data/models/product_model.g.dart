@@ -13,9 +13,7 @@ _$ProductModelImpl _$$ProductModelImplFromJson(Map<String, dynamic> json) =>
       imagePath: json['imagePath'] as String,
       price: (json['price'] as num).toDouble(),
       size: (json['size'] as List<dynamic>).map((e) => e as String).toList(),
-      color: (json['color'] as List<dynamic>)
-          .map((e) => (e as num).toInt())
-          .toList(),
+      color: (json['color'] as List<dynamic>).map((e) => e as String).toList(),
     );
 
 Map<String, dynamic> _$$ProductModelImplToJson(_$ProductModelImpl instance) =>

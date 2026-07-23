@@ -13,7 +13,7 @@ class ProductEntity with _$ProductEntity {
     required String imagePath,
     required double price,
     required List<String> size,
-    required List<int> color,
+    required List<String> color,
   }) = _ProductEntity;
 
   factory ProductEntity.fromModel(ProductModel model) {

@@ -26,10 +26,10 @@ mixin _$CartItemModel {
   String get productImagePath => throw _privateConstructorUsedError;
   double get productPrice => throw _privateConstructorUsedError;
   List<String> get productSizes => throw _privateConstructorUsedError;
-  List<int> get productColors => throw _privateConstructorUsedError;
+  List<String> get productColors => throw _privateConstructorUsedError;
   int get quantity => throw _privateConstructorUsedError;
   String get selectedSize => throw _privateConstructorUsedError;
-  int get selectedColor => throw _privateConstructorUsedError;
+  String get selectedColor => throw _privateConstructorUsedError;
 
   /// Serializes this CartItemModel to a JSON map.
   Map<String, dynamic> toJson() => throw _privateConstructorUsedError;
@@ -54,10 +54,10 @@ abstract class $CartItemModelCopyWith<$Res> {
     String productImagePath,
     double productPrice,
     List<String> productSizes,
-    List<int> productColors,
+    List<String> productColors,
     int quantity,
     String selectedSize,
-    int selectedColor,
+    String selectedColor,
   });
 }
 
@@ -111,7 +111,7 @@ class _$CartItemModelCopyWithImpl<$Res, $Val extends CartItemModel>
             productColors: null == productColors
                 ? _value.productColors
                 : productColors // ignore: cast_nullable_to_non_nullable
-                      as List<int>,
+                      as List<String>,
             quantity: null == quantity
                 ? _value.quantity
                 : quantity // ignore: cast_nullable_to_non_nullable
@@ -123,7 +123,7 @@ class _$CartItemModelCopyWithImpl<$Res, $Val extends CartItemModel>
             selectedColor: null == selectedColor
                 ? _value.selectedColor
                 : selectedColor // ignore: cast_nullable_to_non_nullable
-                      as int,
+                      as String,
           )
           as $Val,
     );
@@ -145,10 +145,10 @@ abstract class _$$CartItemModelImplCopyWith<$Res>
     String productImagePath,
     double productPrice,
     List<String> productSizes,
-    List<int> productColors,
+    List<String> productColors,
     int quantity,
     String selectedSize,
-    int selectedColor,
+    String selectedColor,
   });
 }
 
@@ -201,7 +201,7 @@ class __$$CartItemModelImplCopyWithImpl<$Res>
         productColors: null == productColors
             ? _value._productColors
             : productColors // ignore: cast_nullable_to_non_nullable
-                  as List<int>,
+                  as List<String>,
         quantity: null == quantity
             ? _value.quantity
             : quantity // ignore: cast_nullable_to_non_nullable
@@ -213,7 +213,7 @@ class __$$CartItemModelImplCopyWithImpl<$Res>
         selectedColor: null == selectedColor
             ? _value.selectedColor
             : selectedColor // ignore: cast_nullable_to_non_nullable
-                  as int,
+                  as String,
       ),
     );
   }
@@ -228,10 +228,10 @@ class _$CartItemModelImpl extends _CartItemModel {
     this.productImagePath = '',
     this.productPrice = 0.0,
     final List<String> productSizes = const [],
-    final List<int> productColors = const [],
+    final List<String> productColors = const [],
     this.quantity = 0,
     this.selectedSize = '',
-    this.selectedColor = 0,
+    this.selectedColor = '',
   }) : _productSizes = productSizes,
        _productColors = productColors,
        super._();
@@ -260,10 +260,10 @@ class _$CartItemModelImpl extends _CartItemModel {
     return EqualUnmodifiableListView(_productSizes);
   }
 
-  final List<int> _productColors;
+  final List<String> _productColors;
   @override
   @JsonKey()
-  List<int> get productColors {
+  List<String> get productColors {
     if (_productColors is EqualUnmodifiableListView) return _productColors;
     // ignore: implicit_dynamic_type
     return EqualUnmodifiableListView(_productColors);
@@ -277,7 +277,7 @@ class _$CartItemModelImpl extends _CartItemModel {
   final String selectedSize;
   @override
   @JsonKey()
-  final int selectedColor;
+  final String selectedColor;
 
   @override
   String toString() {
@@ -349,10 +349,10 @@ abstract class _CartItemModel extends CartItemModel {
     final String productImagePath,
     final double productPrice,
     final List<String> productSizes,
-    final List<int> productColors,
+    final List<String> productColors,
     final int quantity,
     final String selectedSize,
-    final int selectedColor,
+    final String selectedColor,
   }) = _$CartItemModelImpl;
   const _CartItemModel._() : super._();
 
@@ -370,13 +370,13 @@ abstract class _CartItemModel extends CartItemModel {
   @override
   List<String> get productSizes;
   @override
-  List<int> get productColors;
+  List<String> get productColors;
   @override
   int get quantity;
   @override
   String get selectedSize;
   @override
-  int get selectedColor;
+  String get selectedColor;
 
   /// Create a copy of CartItemModel
   /// with the given fields replaced by the non-null parameter values.
