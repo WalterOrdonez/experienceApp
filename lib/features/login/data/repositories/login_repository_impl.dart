@@ -34,4 +34,9 @@ class LoginRepositoryImpl implements LoginRepository {
     final model = await _datasource.getCurrentUser();
     return model != null ? UserEntity.fromModel(model) : null;
   }
+
+  @override
+  Future<void> saveDeviceToken({required String token}) {
+    return _datasource.saveDeviceToken(token: token);
+  }
 }

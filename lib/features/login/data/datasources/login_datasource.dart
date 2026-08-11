@@ -10,4 +10,6 @@ abstract class LoginDatasource {
   Future<bool> logout();
 
   Future<UserModel?> getCurrentUser();
+
+  Future<void> saveDeviceToken({required String token});
 }

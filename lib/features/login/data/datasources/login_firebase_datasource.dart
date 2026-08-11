@@ -1,5 +1,6 @@
 import 'dart:developer' as developer;
 
+import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter_prototype/features/login/data/models/user_model.dart';
 import 'package:flutter_prototype/features/login/data/models/user_password_model.dart';
@@ -8,8 +9,10 @@ import 'login_datasource.dart';
 
 class FirebaseLoginDatasource implements LoginDatasource {
   final FirebaseAuth _auth;
-  FirebaseLoginDatasource({FirebaseAuth? auth})
-    : _auth = auth ?? FirebaseAuth.instance {
+  final FirebaseFirestore _firestore;
+  FirebaseLoginDatasource({FirebaseAuth? auth, FirebaseFirestore? firestore})
+    : _auth = auth ?? FirebaseAuth.instance,
+      _firestore = firestore ?? FirebaseFirestore.instance {
     _logInitStatus();
   }
 
@@ -71,7 +74,7 @@ class FirebaseLoginDatasource implements LoginDatasource {
         name: 'login.datasource',
       );
 
-      return _mapFirebaseUser(user);
+      return await _mapFirebaseUser(user);
     } on FirebaseAuthException catch (error, stackTrace) {
       final durationMs = DateTime.now().difference(startTime).inMilliseconds;
       final errorDetails = _analyzeFirebaseError(error, durationMs);
@@ -139,7 +142,24 @@ Message: $message''';
     return _auth.signOut().then((value) => true);
   }
 
-  UserModel _mapFirebaseUser(User user) {
+  Future<UserModel> _mapFirebaseUser(User user) async {
+    String role = '2';
+    try {
+      final doc = await _firestore.collection('usuarios').doc(user.uid).get();
+      if (doc.exists) {
+        role = (doc.data()?['rol'] as String?) ?? '2';
+        developer.log(
+          'Fetched role for uid ${user.uid}: $role',
+          name: 'login.datasource',
+        );
+      }
+    } catch (e) {
+      developer.log(
+        'Error fetching role for uid ${user.uid}: $e',
+        name: 'login.datasource',
+        level: 900,
+      );
+    }
     return UserModel(
       email: user.email ?? '',
       id: user.uid.hashCode,
@@ -150,6 +170,7 @@ Message: $message''';
       image: user.photoURL ?? '',
       accessToken: '',
       newId: user.uid,
+      role: role,
     );
   }
 
@@ -158,6 +179,30 @@ Message: $message''';
     final current = _auth.currentUser;
     if (current == null) return null;
     return _mapFirebaseUser(current);
+  }
+
+  @override
+  Future<void> saveDeviceToken({required String token}) async {
+    final trimmedToken = token.trim();
+    if (trimmedToken.isEmpty) return;
+
+    final currentUser = _auth.currentUser;
+    if (currentUser == null) {
+      developer.log(
+        'Skipping device token save because there is no authenticated user.',
+        name: 'login.datasource.device_token',
+      );
+      return;
+    }
+
+    await _firestore.collection('usuarios').doc(currentUser.uid).set({
+      'deviceTokens': FieldValue.arrayUnion([trimmedToken]),
+    }, SetOptions(merge: true));
+
+    developer.log(
+      'Device token saved for uid ${currentUser.uid}.',
+      name: 'login.datasource.device_token',
+    );
   }
 
   String _maskEmail(String email) {

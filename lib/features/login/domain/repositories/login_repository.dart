@@ -10,4 +10,6 @@ abstract class LoginRepository {
   Future<bool> logout();
 
   Future<UserEntity?> getCurrentUser();
+
+  Future<void> saveDeviceToken({required String token});
 }
