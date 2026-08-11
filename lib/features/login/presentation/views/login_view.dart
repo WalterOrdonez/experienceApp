@@ -20,7 +20,11 @@ class LoginView extends ConsumerWidget {
       }
 
       if (next.isLogged && !(previous?.isLogged ?? false)) {
-        ref.read(routerProvider).go(AppRoutes.adminProducts);
+        final role = next.user?.role ?? '2';
+        final destination = role == '1'
+            ? AppRoutes.adminProducts
+            : AppRoutes.ecommerce;
+        ref.read(routerProvider).go(destination);
       }
     });
 

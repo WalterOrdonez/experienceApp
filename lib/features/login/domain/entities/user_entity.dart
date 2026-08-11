@@ -17,6 +17,7 @@ class UserEntity with _$UserEntity {
     required String image,
     required String accessToken,
     required String newId,
+    @Default('2') String role,
   }) = _UserEntity;
 
   factory UserEntity.fromModel(UserModel model) {
@@ -30,6 +31,7 @@ class UserEntity with _$UserEntity {
       image: model.image,
       accessToken: model.accessToken,
       newId: model.newId,
+      role: model.role,
     );
   }
 }

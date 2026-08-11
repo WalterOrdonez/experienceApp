@@ -26,6 +26,7 @@ mixin _$UserEntity {
   String get image => throw _privateConstructorUsedError;
   String get accessToken => throw _privateConstructorUsedError;
   String get newId => throw _privateConstructorUsedError;
+  String get role => throw _privateConstructorUsedError;
 
   /// Create a copy of UserEntity
   /// with the given fields replaced by the non-null parameter values.
@@ -51,6 +52,7 @@ abstract class $UserEntityCopyWith<$Res> {
     String image,
     String accessToken,
     String newId,
+    String role,
   });
 }
 
@@ -78,6 +80,7 @@ class _$UserEntityCopyWithImpl<$Res, $Val extends UserEntity>
     Object? image = null,
     Object? accessToken = null,
     Object? newId = null,
+    Object? role = null,
   }) {
     return _then(
       _value.copyWith(
@@ -117,6 +120,10 @@ class _$UserEntityCopyWithImpl<$Res, $Val extends UserEntity>
                 ? _value.newId
                 : newId // ignore: cast_nullable_to_non_nullable
                       as String,
+            role: null == role
+                ? _value.role
+                : role // ignore: cast_nullable_to_non_nullable
+                      as String,
           )
           as $Val,
     );
@@ -142,6 +149,7 @@ abstract class _$$UserEntityImplCopyWith<$Res>
     String image,
     String accessToken,
     String newId,
+    String role,
   });
 }
 
@@ -168,6 +176,7 @@ class __$$UserEntityImplCopyWithImpl<$Res>
     Object? image = null,
     Object? accessToken = null,
     Object? newId = null,
+    Object? role = null,
   }) {
     return _then(
       _$UserEntityImpl(
@@ -207,6 +216,10 @@ class __$$UserEntityImplCopyWithImpl<$Res>
             ? _value.newId
             : newId // ignore: cast_nullable_to_non_nullable
                   as String,
+        role: null == role
+            ? _value.role
+            : role // ignore: cast_nullable_to_non_nullable
+                  as String,
       ),
     );
   }
@@ -225,6 +238,7 @@ class _$UserEntityImpl extends _UserEntity {
     required this.image,
     required this.accessToken,
     required this.newId,
+    this.role = '2',
   }) : super._();
 
   @override
@@ -245,10 +259,13 @@ class _$UserEntityImpl extends _UserEntity {
   final String accessToken;
   @override
   final String newId;
+  @override
+  @JsonKey()
+  final String role;
 
   @override
   String toString() {
-    return 'UserEntity(id: $id, username: $username, email: $email, firstName: $firstName, lastName: $lastName, gender: $gender, image: $image, accessToken: $accessToken, newId: $newId)';
+    return 'UserEntity(id: $id, username: $username, email: $email, firstName: $firstName, lastName: $lastName, gender: $gender, image: $image, accessToken: $accessToken, newId: $newId, role: $role)';
   }
 
   @override
@@ -268,7 +285,8 @@ class _$UserEntityImpl extends _UserEntity {
             (identical(other.image, image) || other.image == image) &&
             (identical(other.accessToken, accessToken) ||
                 other.accessToken == accessToken) &&
-            (identical(other.newId, newId) || other.newId == newId));
+            (identical(other.newId, newId) || other.newId == newId) &&
+            (identical(other.role, role) || other.role == role));
   }
 
   @override
@@ -283,6 +301,7 @@ class _$UserEntityImpl extends _UserEntity {
     image,
     accessToken,
     newId,
+    role,
   );
 
   /// Create a copy of UserEntity
@@ -305,6 +324,7 @@ abstract class _UserEntity extends UserEntity {
     required final String image,
     required final String accessToken,
     required final String newId,
+    final String role,
   }) = _$UserEntityImpl;
   const _UserEntity._() : super._();
 
@@ -326,6 +346,8 @@ abstract class _UserEntity extends UserEntity {
   String get accessToken;
   @override
   String get newId;
+  @override
+  String get role;
 
   /// Create a copy of UserEntity
   /// with the given fields replaced by the non-null parameter values.

@@ -30,6 +30,7 @@ mixin _$UserModel {
   String get image => throw _privateConstructorUsedError;
   String get accessToken => throw _privateConstructorUsedError;
   String get newId => throw _privateConstructorUsedError;
+  String get role => throw _privateConstructorUsedError;
 
   /// Serializes this UserModel to a JSON map.
   Map<String, dynamic> toJson() => throw _privateConstructorUsedError;
@@ -56,6 +57,7 @@ abstract class $UserModelCopyWith<$Res> {
     String image,
     String accessToken,
     String newId,
+    String role,
   });
 }
 
@@ -83,6 +85,7 @@ class _$UserModelCopyWithImpl<$Res, $Val extends UserModel>
     Object? image = null,
     Object? accessToken = null,
     Object? newId = null,
+    Object? role = null,
   }) {
     return _then(
       _value.copyWith(
@@ -122,6 +125,10 @@ class _$UserModelCopyWithImpl<$Res, $Val extends UserModel>
                 ? _value.newId
                 : newId // ignore: cast_nullable_to_non_nullable
                       as String,
+            role: null == role
+                ? _value.role
+                : role // ignore: cast_nullable_to_non_nullable
+                      as String,
           )
           as $Val,
     );
@@ -147,6 +154,7 @@ abstract class _$$UserModelImplCopyWith<$Res>
     String image,
     String accessToken,
     String newId,
+    String role,
   });
 }
 
@@ -173,6 +181,7 @@ class __$$UserModelImplCopyWithImpl<$Res>
     Object? image = null,
     Object? accessToken = null,
     Object? newId = null,
+    Object? role = null,
   }) {
     return _then(
       _$UserModelImpl(
@@ -212,6 +221,10 @@ class __$$UserModelImplCopyWithImpl<$Res>
             ? _value.newId
             : newId // ignore: cast_nullable_to_non_nullable
                   as String,
+        role: null == role
+            ? _value.role
+            : role // ignore: cast_nullable_to_non_nullable
+                  as String,
       ),
     );
   }
@@ -230,6 +243,7 @@ class _$UserModelImpl implements _UserModel {
     required this.image,
     required this.accessToken,
     required this.newId,
+    required this.role,
   });
 
   factory _$UserModelImpl.fromJson(Map<String, dynamic> json) =>
@@ -253,10 +267,12 @@ class _$UserModelImpl implements _UserModel {
   final String accessToken;
   @override
   final String newId;
+  @override
+  final String role;
 
   @override
   String toString() {
-    return 'UserModel(id: $id, username: $username, email: $email, firstName: $firstName, lastName: $lastName, gender: $gender, image: $image, accessToken: $accessToken, newId: $newId)';
+    return 'UserModel(id: $id, username: $username, email: $email, firstName: $firstName, lastName: $lastName, gender: $gender, image: $image, accessToken: $accessToken, newId: $newId, role: $role)';
   }
 
   @override
@@ -276,7 +292,8 @@ class _$UserModelImpl implements _UserModel {
             (identical(other.image, image) || other.image == image) &&
             (identical(other.accessToken, accessToken) ||
                 other.accessToken == accessToken) &&
-            (identical(other.newId, newId) || other.newId == newId));
+            (identical(other.newId, newId) || other.newId == newId) &&
+            (identical(other.role, role) || other.role == role));
   }
 
   @JsonKey(includeFromJson: false, includeToJson: false)
@@ -292,6 +309,7 @@ class _$UserModelImpl implements _UserModel {
     image,
     accessToken,
     newId,
+    role,
   );
 
   /// Create a copy of UserModel
@@ -319,6 +337,7 @@ abstract class _UserModel implements UserModel {
     required final String image,
     required final String accessToken,
     required final String newId,
+    required final String role,
   }) = _$UserModelImpl;
 
   factory _UserModel.fromJson(Map<String, dynamic> json) =
@@ -342,6 +361,8 @@ abstract class _UserModel implements UserModel {
   String get accessToken;
   @override
   String get newId;
+  @override
+  String get role;
 
   /// Create a copy of UserModel
   /// with the given fields replaced by the non-null parameter values.

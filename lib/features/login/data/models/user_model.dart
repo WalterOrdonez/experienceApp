@@ -15,6 +15,7 @@ class UserModel with _$UserModel {
     required String image,
     required String accessToken,
     required String newId,
+    required String role,
   }) = _UserModel;
 
   factory UserModel.fromJson(Map<String, dynamic> json) =>

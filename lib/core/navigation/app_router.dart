@@ -53,7 +53,8 @@ final routerProvider = Provider<GoRouter>((ref) {
       }
 
       if (isLogged && loggingIn) {
-        return AppRoutes.salesDashboard;
+        final role = loginState.user?.role ?? '2';
+        return role == '1' ? AppRoutes.adminProducts : AppRoutes.ecommerce;
       }
 
       return null;
