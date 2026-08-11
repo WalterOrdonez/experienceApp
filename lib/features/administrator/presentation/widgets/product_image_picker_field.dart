@@ -43,7 +43,7 @@ class ProductImagePickerField extends StatelessWidget {
                   webHtmlElementStrategy: kIsWeb
                       ? WebHtmlElementStrategy.prefer
                       : WebHtmlElementStrategy.never,
-                  errorBuilder: (_, __, ___) => _placeholder(),
+                  errorBuilder: (_, _, _) => _placeholder(),
                 )
               else
                 _placeholder(),

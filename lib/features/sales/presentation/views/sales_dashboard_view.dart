@@ -43,7 +43,7 @@ class SalesDashboardView extends ConsumerWidget {
               padding: const EdgeInsets.all(16),
               child: ListView.separated(
                 itemCount: sales.length,
-                separatorBuilder: (_, __) => const SizedBox(height: 12),
+                separatorBuilder: (_, _) => const SizedBox(height: 12),
                 itemBuilder: (context, index) {
                   final sale = sales[index];
                   return SalesCard(sale: sale, index: index);
