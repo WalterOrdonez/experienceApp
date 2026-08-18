@@ -3,13 +3,23 @@ import 'package:firebase_messaging/firebase_messaging.dart';
 import 'package:flutter/foundation.dart';
 import 'package:flutter_local_notifications/flutter_local_notifications.dart';
 import 'package:flutter_prototype/firebase_options.dart';
+import 'package:flutter_prototype/core/log_data_source.dart';
+import 'package:flutter_prototype/core/navigation/app_router.dart';
 import 'package:flutter_prototype/features/login/domain/usecases/save_device_token.dart';
+import 'package:go_router/go_router.dart';
 
 @pragma('vm:entry-point')
-Future<void> firebaseMessagingBackgroundHandler(RemoteMessage message) async {
+Future<void> _firebaseMessagingBackgroundHandler(RemoteMessage message) async {
   await Firebase.initializeApp(options: DefaultFirebaseOptions.currentPlatform);
   debugPrint('Background message received: ${message.messageId}');
   debugPrint('Background message data: ${message.data}');
+
+  LogDataSource logDataSource = LogDataSource();
+
+  await logDataSource.logEvent('background_notification_received', {
+    'message_id': message.messageId,
+    'data': message.data,
+  });
 }
 
 class NotificationService {
@@ -20,26 +30,32 @@ class NotificationService {
   final FirebaseMessaging _firebaseMessaging;
   final SaveDeviceToken _saveDeviceToken;
   final FlutterLocalNotificationsPlugin _localNotifications;
-  final void Function(RemoteMessage message)? _onForegroundMessage;
-  final void Function(RemoteMessage message)? _onNotificationOpened;
+  GoRouter? _router;
+
+  RemoteMessage? _initialMessage;
 
   NotificationService({
     FirebaseMessaging? firebaseMessaging,
     SaveDeviceToken? saveDeviceToken,
-    void Function(RemoteMessage message)? onForegroundMessage,
-    void Function(RemoteMessage message)? onNotificationOpened,
+    FlutterLocalNotificationsPlugin? localNotifications,
+    GoRouter? router,
   }) : _firebaseMessaging = firebaseMessaging ?? FirebaseMessaging.instance,
        _saveDeviceToken = saveDeviceToken ?? SaveDeviceToken(),
-       _localNotifications = FlutterLocalNotificationsPlugin(),
-       _onForegroundMessage = onForegroundMessage,
-       _onNotificationOpened = onNotificationOpened;
+       _localNotifications =
+           localNotifications ?? FlutterLocalNotificationsPlugin(),
+       _router = router;
+
+  void setRouter(GoRouter router) {
+    _router = router;
+  }
 
   Future<void> init() async {
     await _requestPermissions();
     await _initRemoteNotifications();
     if (!kIsWeb) {
       await _initLocalNotifications();
-      await _initNotificationInteractions();
+      _initBackgroundHandler();
+      _initMessageOpenedHandler();
     }
   }
 
@@ -115,27 +131,9 @@ class NotificationService {
     }
   }
 
-  Future<void> _initNotificationInteractions() async {
-    final initialMessage = await _firebaseMessaging.getInitialMessage();
-    if (initialMessage != null) {
-      debugPrint(
-        'App opened from terminated by notification: ${initialMessage.messageId}',
-      );
-      _onNotificationOpened?.call(initialMessage);
-    }
-
-    FirebaseMessaging.onMessageOpenedApp.listen((message) {
-      debugPrint(
-        'App opened from background by notification: ${message.messageId}',
-      );
-      _onNotificationOpened?.call(message);
-    });
-  }
-
   void _foregroundMessageHandler(RemoteMessage message) {
     debugPrint('Foreground message received: ${message.messageId}');
     debugPrint('Message data: ${message.data}');
-    _onForegroundMessage?.call(message);
 
     if (message.notification != null) {
       debugPrint(
@@ -192,5 +190,35 @@ class NotificationService {
       notificationDetails: details,
       payload: message.data.toString(),
     );
+  }
+
+  void _initBackgroundHandler() async {
+    FirebaseMessaging.onBackgroundMessage(_firebaseMessagingBackgroundHandler);
+  }
+
+  void _initMessageOpenedHandler() {
+    FirebaseMessaging.onMessageOpenedApp.listen((message) {
+      debugPrint(
+        'App opened from background by notification: ${message.messageId}',
+      );
+      final title = message.notification?.title ?? '';
+      final data = message.data;
+
+      switch (title) {
+        case 'Profile':
+          _router?.go(AppRoutes.profile);
+          break;
+        case 'Sales':
+          _router?.go(AppRoutes.salesDashboard, extra: data);
+          break;
+        default:
+          _router?.go(AppRoutes.ecommerce);
+      }
+    });
+  }
+
+  Future<RemoteMessage?> getInitialMessage() async {
+    _initialMessage = await _firebaseMessaging.getInitialMessage();
+    return _initialMessage;
   }
 }
