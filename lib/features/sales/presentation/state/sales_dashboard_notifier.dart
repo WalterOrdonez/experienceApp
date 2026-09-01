@@ -4,45 +4,50 @@ import 'package:flutter_prototype/features/sales/domain/use_cases/get_sales_stre
 import 'package:flutter_prototype/features/sales/presentation/state/sales_dashboard_state.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 
-final salesDashboardProvider = StateNotifierProvider.autoDispose
-    .family<SalesDashboardNotifier, SalesDashboardState, String>((ref, userId) {
-      return SalesDashboardNotifier(userId: userId);
+typedef SalesDashboardArgs = ({String saleId, String userId});
+
+final salesDashboardProvider =
+    NotifierProvider.family<
+      SalesDashboardNotifier,
+      SalesDashboardState,
+      SalesDashboardArgs
+    >(() {
+      return SalesDashboardNotifier();
     });
 
-class SalesDashboardNotifier extends StateNotifier<SalesDashboardState> {
+class SalesDashboardNotifier
+    extends FamilyNotifier<SalesDashboardState, SalesDashboardArgs> {
   final GetSalesStreamUseCase _getSalesStreamUseCase;
-  final String _userId;
 
-  SalesDashboardNotifier({
-    required String userId,
-    GetSalesStreamUseCase? getSalesStreamUseCase,
-  }) : _userId = userId,
-       _getSalesStreamUseCase =
-           getSalesStreamUseCase ?? GetSalesStreamUseCase(),
-       super(SalesDashboardState.initial()) {
-    _init();
-  }
+  SalesDashboardNotifier({GetSalesStreamUseCase? getSalesStreamUseCase})
+    : _getSalesStreamUseCase = getSalesStreamUseCase ?? GetSalesStreamUseCase();
 
   StreamSubscription? _salesStreamSubscription;
 
-  Future<void> _init() async {
-    state = SalesDashboardState.loading(sales: []);
-    try {
-      _salesStreamSubscription = _getSalesStreamUseCase(userId: _userId).listen(
-        (sales) {
-          print('Received sales update: ${sales.length} items');
-          state = SalesDashboardState.loaded(sales: sales);
-        },
-      );
-    } catch (e) {
-      print('Error fetching sales stream: $e');
-      state = SalesDashboardState.error(sales: [], message: e.toString());
-    }
+  String get saleId => arg.saleId;
+  String get userId => arg.userId;
+
+  void _listenSales(String userId) {
+    _salesStreamSubscription?.cancel();
+    _salesStreamSubscription = _getSalesStreamUseCase(userId: userId).listen(
+      (sales) {
+        state = SalesDashboardState.loaded(sales: sales);
+      },
+      onError: (Object e) {
+        state = SalesDashboardState.error(sales: [], message: e.toString());
+      },
+    );
   }
 
   @override
-  void dispose() {
-    _salesStreamSubscription?.cancel();
-    super.dispose();
+  SalesDashboardState build(SalesDashboardArgs args) {
+    ref.onDispose(() => _salesStreamSubscription?.cancel());
+
+    if (args.userId.isEmpty) {
+      return SalesDashboardState.initial();
+    }
+
+    _listenSales(args.userId);
+    return SalesDashboardState.loading(sales: []);
   }
 }

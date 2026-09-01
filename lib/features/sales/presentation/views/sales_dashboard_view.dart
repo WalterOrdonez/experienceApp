@@ -6,14 +6,17 @@ import 'package:flutter_prototype/features/sales/presentation/widgets/sales_card
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 
 class SalesDashboardView extends ConsumerWidget {
-  const SalesDashboardView({super.key});
+  const SalesDashboardView({required this.saleId, super.key});
+  final String saleId;
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
     final userId = ref.watch(
       loginProvider.select((state) => state.user?.newId ?? ''),
     );
-    final state = ref.watch(salesDashboardProvider(userId));
+    final state = ref.watch(
+      salesDashboardProvider((saleId: saleId, userId: userId)),
+    );
 
     return Scaffold(
       appBar: AppBar(

@@ -98,7 +98,17 @@ final routerProvider = Provider<GoRouter>((ref) {
       ),
       GoRoute(
         path: AppRoutes.salesDashboard,
-        builder: (context, state) => const SalesDashboardView(),
+        builder: (context, state) {
+          // La notificación envía message.data (Map); otros flujos pueden enviar el id directo.
+          final extra = state.extra;
+          final saleId = switch (extra) {
+            String value => value,
+            Map<String, dynamic> data => data['saleId']?.toString() ?? '',
+            Map data => data['saleId']?.toString() ?? '',
+            _ => '',
+          };
+          return SalesDashboardView(saleId: saleId);
+        },
       ),
       GoRoute(
         path: AppRoutes.profile,

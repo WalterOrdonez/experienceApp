@@ -1,11 +1,13 @@
 import 'package:firebase_core/firebase_core.dart';
 import 'package:firebase_messaging/firebase_messaging.dart';
 import 'package:flutter/foundation.dart';
+import 'package:flutter/material.dart';
 import 'package:flutter_local_notifications/flutter_local_notifications.dart';
 import 'package:flutter_prototype/firebase_options.dart';
 import 'package:flutter_prototype/core/log_data_source.dart';
 import 'package:flutter_prototype/core/navigation/app_router.dart';
 import 'package:flutter_prototype/features/login/domain/usecases/save_device_token.dart';
+import 'package:flutter_prototype/main.dart';
 import 'package:go_router/go_router.dart';
 
 @pragma('vm:entry-point')
@@ -60,6 +62,10 @@ class NotificationService {
   }
 
   Future<void> _requestPermissions() async {
+    if (kIsWeb) {
+      debugPrint('Skipping requestPermission on web (foreground toast only).');
+      return;
+    }
     try {
       debugPrint('FCM init start');
 
@@ -139,8 +145,25 @@ class NotificationService {
       debugPrint(
         'Notification title: ${message.notification?.title}, body: ${message.notification?.body}',
       );
+      _showForegroundBanner(message);
       if (!kIsWeb) _showLocalNotification(message);
     }
+  }
+
+  void _showForegroundBanner(RemoteMessage message) {
+    final messengerState = rootScaffoldMessengerKey.currentState;
+    if (messengerState == null) return;
+
+    final title = message.notification?.title ?? 'Notificación';
+    final body = message.notification?.body ?? '';
+
+    messengerState.hideCurrentSnackBar();
+    messengerState.showSnackBar(
+      SnackBar(
+        content: Text(body.isEmpty ? title : '$title\n$body'),
+        duration: const Duration(seconds: 4),
+      ),
+    );
   }
 
   Future<void> _initLocalNotifications() async {
