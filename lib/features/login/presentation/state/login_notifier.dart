@@ -38,6 +38,26 @@ class LoginNotifier extends StateNotifier<LoginState> {
     state = state.copyWith(obscurePassword: !state.obscurePassword);
   }
 
+  String? _pendingRedirectLocation;
+  Object? _pendingRedirectExtra;
+
+  /// Guarda la ruta protegida que se intentó abrir sin sesión, para reanudarla tras el login.
+  void setPendingRedirect(String location, {Object? extra}) {
+    _pendingRedirectLocation = location;
+    _pendingRedirectExtra = extra;
+  }
+
+  /// Devuelve y limpia la redirección pendiente, si existe.
+  ({String location, Object? extra})? consumePendingRedirect() {
+    final location = _pendingRedirectLocation;
+    if (location == null) return null;
+
+    final extra = _pendingRedirectExtra;
+    _pendingRedirectLocation = null;
+    _pendingRedirectExtra = null;
+    return (location: location, extra: extra);
+  }
+
   Future<void> checkSession() async {
     final hasSession = await _isUserLogged();
     if (hasSession) {

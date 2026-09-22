@@ -31,10 +31,24 @@ final routerRefreshProvider = Provider<ValueNotifier<bool>>((ref) {
 /// Provider del router para acceder a la navegación desde cualquier lugar
 final routerProvider = Provider<GoRouter>((ref) {
   final refreshListenable = ref.read(routerRefreshProvider);
+  late final GoRouter router;
 
-  return GoRouter(
+  // Reanuda la navegación a la ruta protegida que se pidió sin sesión,
+  // una vez que el login se completa (ver captura en `redirect` más abajo).
+  ref.listen(loginProvider, (previous, next) {
+    final justLoggedIn = !(previous?.isLogged ?? false) && next.isLogged;
+    if (!justLoggedIn) return;
+
+    final pending = ref.read(loginProvider.notifier).consumePendingRedirect();
+    if (pending != null) {
+      router.go(pending.location, extra: pending.extra);
+    }
+  });
+
+  router = GoRouter(
     refreshListenable: refreshListenable,
     redirect: (context, state) {
+      final loginNotifier = ref.read(loginProvider.notifier);
       final loginState = ref.read(loginProvider);
       final isLogged = loginState.isLogged;
       final isCheckingSession = loginState.isCheckingSession;
@@ -49,6 +63,10 @@ final routerProvider = Provider<GoRouter>((ref) {
       }
 
       if (!isLogged && !loggingIn && !onboarding) {
+        loginNotifier.setPendingRedirect(
+          state.uri.toString(),
+          extra: state.extra,
+        );
         return AppRoutes.login;
       }
 
@@ -116,6 +134,8 @@ final routerProvider = Provider<GoRouter>((ref) {
       ),
     ],
   );
+
+  return router;
 });
 
 /// Rutas de la aplicación
