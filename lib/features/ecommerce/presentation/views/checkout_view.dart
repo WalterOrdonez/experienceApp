@@ -17,9 +17,10 @@ class CheckoutView extends ConsumerWidget {
     double amount,
   ) async {
     try {
-      final response = await ref
+      final result = await ref
           .read(checkoutProvider.notifier)
           .processPayment(amount);
+      final response = result.response;
 
       if (!context.mounted) return;
 
@@ -30,6 +31,12 @@ class CheckoutView extends ConsumerWidget {
           backgroundColor: response.success ? Colors.green : Colors.red,
         ),
       );
+
+      if (response.success && result.saleId != null) {
+        ref
+            .read(routerProvider)
+            .push(AppRoutes.salesDashboard, extra: result.saleId);
+      }
     } catch (_error) {
       if (!context.mounted) return;
       print('Error al procesar el pago: $_error');

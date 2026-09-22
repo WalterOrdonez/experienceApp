@@ -1,16 +1,21 @@
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter_prototype/features/ecommerce/data/datasources/payment_datasource.dart';
+import 'package:flutter_prototype/features/ecommerce/data/datasources/sale_firestore_datasource.dart';
 import 'package:flutter_prototype/features/ecommerce/data/repositories/payment_repository_imp.dart';
+import 'package:flutter_prototype/features/ecommerce/data/repositories/sale_repository_impl.dart';
 import 'package:flutter_prototype/features/ecommerce/domain/entities/payment_method_entity.dart';
 import 'package:flutter_prototype/features/ecommerce/domain/entities/payment_response_entity.dart';
 import 'package:flutter_prototype/features/ecommerce/domain/usecases/process_payment.dart';
+import 'package:flutter_prototype/features/ecommerce/domain/usecases/register_sale.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'checkout_state.dart';
 
 /// Notifier que maneja la lógica del checkout
 class CheckoutNotifier extends StateNotifier<CheckoutState> {
   final ProcessPayment _processPayment;
+  final RegisterSale _registerSale;
 
-  CheckoutNotifier(this._processPayment)
+  CheckoutNotifier(this._processPayment, this._registerSale)
     : super(
         const CheckoutState(
           paymentMethods: [
@@ -99,14 +104,26 @@ class CheckoutNotifier extends StateNotifier<CheckoutState> {
     return 'Card';
   }
 
-  /// Procesa el pago
-  Future<PaymentResponseEntity> processPayment(double amount) {
-    return _processPayment(
+  /// Procesa el pago y registra la venta si fue exitoso
+  Future<({PaymentResponseEntity response, String? saleId})> processPayment(
+    double amount,
+  ) async {
+    final response = await _processPayment(
       cardNumber: state.paymentMethods
           .firstWhere((method) => method.isSelected)
           .cardNumber,
       amount: amount,
     );
+
+    String? saleId;
+    if (response.success) {
+      final userId = FirebaseAuth.instance.currentUser?.uid;
+      if (userId != null) {
+        saleId = await _registerSale(userId: userId, total: amount);
+      }
+    }
+
+    return (response: response, saleId: saleId);
   }
 
   void setAmount(double total) {
@@ -119,6 +136,13 @@ final checkoutProvider = StateNotifierProvider<CheckoutNotifier, CheckoutState>(
   (ref) {
     final dataSource = PaymentDataSource();
     final repository = PaymentRepositoryImp(paymentDataSource: dataSource);
-    return CheckoutNotifier(ProcessPayment(repository));
+
+    final saleDataSource = SaleFirestoreDataSource();
+    final saleRepository = SaleRepositoryImpl(saleDataSource: saleDataSource);
+
+    return CheckoutNotifier(
+      ProcessPayment(repository),
+      RegisterSale(saleRepository),
+    );
   },
 );
