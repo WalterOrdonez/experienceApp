@@ -1,6 +1,7 @@
 import 'dart:developer' as developer;
 
 import 'package:firebase_auth/firebase_auth.dart';
+import 'package:flutter_prototype/main.dart';
 import 'package:flutter_prototype/features/login/data/models/user_password_model.dart';
 import 'package:flutter_prototype/features/login/domain/usecases/get_current_user.dart';
 import 'package:flutter_prototype/features/login/domain/usecases/is_user_logged.dart';
@@ -46,6 +47,7 @@ class LoginNotifier extends StateNotifier<LoginState> {
         isLogged: true,
         user: user,
       );
+      await notificationService.refreshDeviceToken();
     } else {
       state = state.copyWith(isCheckingSession: false, isLogged: false);
     }
@@ -87,6 +89,7 @@ class LoginNotifier extends StateNotifier<LoginState> {
         user: user,
         errorMessage: null,
       );
+      await notificationService.refreshDeviceToken();
     } on FirebaseAuthException catch (error, stackTrace) {
       final durationMs = DateTime.now().difference(startTime).inMilliseconds;
       developer.log(

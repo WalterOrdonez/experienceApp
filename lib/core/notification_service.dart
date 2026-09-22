@@ -96,22 +96,7 @@ class NotificationService {
 
   Future<void> _initRemoteNotifications() async {
     try {
-      if (kIsWeb && _webVapidKey.isEmpty) {
-        debugPrint(
-          'FIREBASE_WEB_VAPID_KEY is empty. Define it to get web FCM token.',
-        );
-      }
-      debugPrint('Requesting FCM token...');
-      final token = await _firebaseMessaging.getToken(
-        vapidKey: kIsWeb && _webVapidKey.isNotEmpty ? _webVapidKey : null,
-      );
-
-      if (token == null || token.isEmpty) {
-        debugPrint('FCM token is null/empty. Check permission and VAPID key.');
-      } else {
-        debugPrint('FCM Token: $token');
-        await _persistDeviceToken(token);
-      }
+      await refreshDeviceToken();
 
       FirebaseMessaging.instance.onTokenRefresh.listen((newToken) async {
         debugPrint('FCM token refreshed');
@@ -125,6 +110,29 @@ class NotificationService {
       debugPrint('FCM init error: $e');
       debugPrint('Stacktrace: $st');
     }
+  }
+
+  /// Obtiene el token FCM actual y lo persiste para el usuario autenticado.
+  /// Debe llamarse tanto en el arranque como justo después de iniciar sesión,
+  /// ya que en el arranque normalmente aún no hay usuario autenticado.
+  Future<void> refreshDeviceToken() async {
+    if (kIsWeb && _webVapidKey.isEmpty) {
+      debugPrint(
+        'FIREBASE_WEB_VAPID_KEY is empty. Define it to get web FCM token.',
+      );
+    }
+    debugPrint('Requesting FCM token...');
+    final token = await _firebaseMessaging.getToken(
+      vapidKey: kIsWeb && _webVapidKey.isNotEmpty ? _webVapidKey : null,
+    );
+
+    if (token == null || token.isEmpty) {
+      debugPrint('FCM token is null/empty. Check permission and VAPID key.');
+      return;
+    }
+
+    debugPrint('FCM Token: $token');
+    await _persistDeviceToken(token);
   }
 
   Future<void> _persistDeviceToken(String token) async {
