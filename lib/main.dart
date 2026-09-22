@@ -41,8 +41,9 @@ class MainApp extends ConsumerWidget {
       final title =
           initialMessage?.notification?.title ??
           'App abierta desde notificación';
+      // Mismo criterio de título que NotificationService._initMessageOpenedHandler
       switch (title) {
-        case 'profile':
+        case 'Profile':
           router.go(AppRoutes.profile);
           break;
         default:
