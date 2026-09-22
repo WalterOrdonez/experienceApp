@@ -46,6 +46,9 @@ class MainApp extends ConsumerWidget {
         case 'Profile':
           router.go(AppRoutes.profile);
           break;
+        case 'Sales':
+          router.go(AppRoutes.salesDashboard, extra: initialMessage?.data);
+          break;
         default:
           break;
       }
