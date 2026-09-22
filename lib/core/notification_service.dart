@@ -242,6 +242,9 @@ class NotificationService {
         case 'Sales':
           _router?.go(AppRoutes.salesDashboard, extra: data);
           break;
+        case 'SaleDetail':
+          _router?.go(AppRoutes.saleDetail, extra: data);
+          break;
         default:
           _router?.go(AppRoutes.ecommerce);
       }

@@ -35,7 +35,14 @@ class CheckoutView extends ConsumerWidget {
       if (response.success && result.saleId != null) {
         ref
             .read(routerProvider)
-            .push(AppRoutes.salesDashboard, extra: result.saleId);
+            .push(
+              AppRoutes.saleDetail,
+              extra: {
+                'saleId': result.saleId,
+                'amount': amount,
+                'date': DateTime.now().toIso8601String(),
+              },
+            );
       }
     } catch (_error) {
       if (!context.mounted) return;

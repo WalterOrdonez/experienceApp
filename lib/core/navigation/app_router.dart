@@ -10,6 +10,7 @@ import 'package:flutter_prototype/features/login/presentation/views/login_view.d
 import 'package:flutter_prototype/features/onboarding/presentation/views/onboarding_next_view.dart';
 import 'package:flutter_prototype/features/onboarding/presentation/views/onboarding_view.dart';
 import 'package:flutter_prototype/features/sales/presentation/views/sales_dashboard_view.dart';
+import 'package:flutter_prototype/features/sales/presentation/views/sale_detail_view.dart';
 import 'package:flutter_prototype/features/profile/presentation/views/profile_view.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:go_router/go_router.dart';
@@ -129,6 +130,24 @@ final routerProvider = Provider<GoRouter>((ref) {
         },
       ),
       GoRoute(
+        path: AppRoutes.saleDetail,
+        builder: (context, state) {
+          // Igual que salesDashboard: la notificación envía message.data (Map).
+          final extra = state.extra;
+          final data = switch (extra) {
+            Map<String, dynamic> value => value,
+            Map value => value.cast<String, dynamic>(),
+            _ => <String, dynamic>{},
+          };
+          final saleId = data['saleId']?.toString() ?? '';
+          final amount = double.tryParse(data['amount']?.toString() ?? '') ?? 0;
+          final date =
+              DateTime.tryParse(data['date']?.toString() ?? '') ??
+              DateTime.now();
+          return SaleDetailView(saleId: saleId, amount: amount, date: date);
+        },
+      ),
+      GoRoute(
         path: AppRoutes.profile,
         builder: (context, state) => const ProfileView(),
       ),
@@ -150,5 +169,6 @@ abstract class AppRoutes {
   static const addPaymentCard = '/add-payment-card';
   static const checkout = '/checkout';
   static const salesDashboard = '/sales-dashboard';
+  static const saleDetail = '/sale-detail';
   static const profile = '/profile';
 }
