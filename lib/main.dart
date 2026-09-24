@@ -11,6 +11,10 @@ final GlobalKey<ScaffoldMessengerState> rootScaffoldMessengerKey =
     GlobalKey<ScaffoldMessengerState>();
 final NotificationService notificationService = NotificationService();
 
+void main() {
+  runProject();
+}
+
 void runProject() async {
   WidgetsFlutterBinding.ensureInitialized();
   await Firebase.initializeApp(options: DefaultFirebaseOptions.currentPlatform);
